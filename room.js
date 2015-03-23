@@ -29,9 +29,12 @@ Room.prototype.moveMob = function(mob, exitName) {
 Room.prototype.describeMobs = function() {
   var desc = '<span class="roomMobs">';
   for (var i=0; i<this.mobs.length; i++) {
-    desc += this.mobs[i].name;
-    if (i<this.mobs.length-1) {
-      desc += ", ";
+    if (this.mobs[i].name != "player") {
+      desc += this.mobs[i].name;
+      desc += " ("+ this.mobs[i].desc +")";
+      if (i<this.mobs.length-1) {
+        desc += ", ";
+      }
     }
   }
   desc += '</span>';
