@@ -48,3 +48,7 @@ html, body {
 .error {
   color: #ffabab;
 }
+
+.settingsValue {
+  color: #a9a9ff;
+}

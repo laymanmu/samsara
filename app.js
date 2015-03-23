@@ -1,10 +1,11 @@
 
 var App = {
 
-  player:        new Mob({name:"player", desc:"a human"}),
-  rooms:         [],
-  mobs:          [],
-  cmdHistory:    {pos:0, partial:null, cmds:[]},
+  settings:   {alwaysClearScreen:true},
+  rooms:      [],
+  mobs:       [],
+  player:     new Mob({name:"player", desc:"a human"}),
+  cmdHistory: {pos:0, partial:null, cmds:[]},
 
   init: function() {
     this.input  = document.getElementById('input');
@@ -13,6 +14,7 @@ var App = {
     this.initMobs();
     this.clearOutput();
     this.look();
+    this.input.focus();
     window.onkeypress = function(e) {
       e = e || window.event;
       var code = e.which==0 ? e.keyCode : e.which;
@@ -42,7 +44,11 @@ var App = {
   },
 
   print: function(html) {
-    this.printDivider();
+    if (this.settings.alwaysClearScreen) {
+      this.output.innerHTML = "";
+    } else {
+      this.printDivider();
+    }
     this.output.innerHTML += html;
     this.scrollToBottom();
   },
@@ -118,9 +124,29 @@ var App = {
       this.clearOutput();
       return null;
     } else if (cmd == "help") {
-      var html = '<span class="help">Commands: clear, look, help</span><br>';
+      var html = '<span class="help">Commands: clear, help, look, rest, settings</span><br>';
       this.print(html);
       return null;
+    } else if (cmd == "settings") {
+      var html = 'Settings:<br><br>';
+      for (var key in this.settings) {
+        if (this.settings.hasOwnProperty(key)) {
+          html += key +': <span class="settingsValue">'+ this.settings[key] +'</span><br>';
+        }
+      }
+      this.print(html);
+      return null;
+    }
+
+    // settings:
+    for (var key in this.settings) {
+      if (this.settings.hasOwnProperty(key)) {
+        if (cmd == key) {
+          this.settings[key] = !this.settings[key];
+          this.print(key +" setting is now set to: "+ this.settings[key]);
+          return null;
+        }
+      }
     }
 
     // exact spelling of exits:
@@ -128,7 +154,7 @@ var App = {
       var exitNames = this.player.room.getExitNames();
       for (var i=0; i<exitNames.length; i++) {
         if (cmd == exitNames[i]) {
-          this.changeRoom(exitNames[i]);
+          this.player.room.moveMob(this.player, exitNames[i]);
           tookTurn = true;
         }
       }
@@ -140,7 +166,7 @@ var App = {
       for (var i=0; i<exitNames.length; i++) {
         var exitPartial = exitNames[i].substring(0,cmdLength);
         if (cmd == exitPartial) {
-          this.changeRoom(exitNames[i]);
+          this.player.room.moveMob(this.player, exitNames[i]);
           tookTurn = true;
         }
       }
@@ -151,11 +177,6 @@ var App = {
     } else {
       this.print('<span class="error">Unknown command: '+cmd+'</span><br>');
     }
-  },
-
-  changeRoom: function(exitName) {
-    this.player.room.moveMob(this.player, exitName);
-    this.look();
   },
 
   takeTurn: function() {
