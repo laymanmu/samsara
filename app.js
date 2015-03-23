@@ -1,14 +1,16 @@
 
 var App = {
 
+  player:        new Mob({name:"player", desc:"a human"}),
   rooms:         [],
-  currentRoom:   null,
+  mobs:          [],
   cmdHistory:    {pos:0, partial:null, cmds:[]},
 
   init: function() {
     this.input  = document.getElementById('input');
     this.output = document.getElementById('output');
-    this.createRooms();
+    this.initRooms();
+    this.initMobs();
     this.clearOutput();
     this.look();
     window.onkeypress = function(e) {
@@ -18,14 +20,25 @@ var App = {
     }
   },
 
-  createRooms: function() {
+  initRooms: function() {
     var park = new Room({name:"deer park", desc:"a shaded grove"});
     var pond = new Room({name:"small pond", desc:"a small pond surrounded by trees"});
     park.exits.add("north", pond);
     pond.exits.add("south", park);
     this.rooms.push(park);
     this.rooms.push(pond);
-    this.currentRoom = park;
+  },
+
+  initMobs: function() {
+    this.rooms[0].addMob(this.player);
+    this.addMob(new Mob({name:"deer", desc:"a big buck"}),    this.rooms[0]);
+    this.addMob(new Mob({name:"deer", desc:"a gentle fawn"}), this.rooms[1]);
+    this.addMob(new Mob({name:"deer", desc:"a quick doe"}),   this.rooms[1]);
+  },
+
+  addMob: function(mob, room) {
+    this.mobs.push(mob);
+    room.addMob(mob);
   },
 
   print: function(html) {
@@ -50,9 +63,11 @@ var App = {
   },
 
   look: function() {
-    var html = '<span class="roomName">'+this.currentRoom.name+'</span><br />';
-    html += '<span class="roomDesc">'+this.currentRoom.desc+'</span><br />';
-    html += 'Exits: <span class="roomExits">'+this.currentRoom.describeExits()+'</span><br>';
+    var room = this.player.room;
+    var html = '<span class="roomName">'+room.name+'</span><br />';
+    html += '<span class="roomDesc">'+room.desc+'</span><br />';
+    html += 'Exits: <span class="roomExits">'+room.describeExits()+'</span><br>';
+    html += 'Mobs:  <span class="roomMobs">'+room.describeMobs()+'</span><br>';
     this.print(html);
   },
 
@@ -94,46 +109,59 @@ var App = {
   runCommand: function(cmd) {
     if (!cmd || cmd.length==0) return;
 
+    var tookTurn = false;
+
     // built-in commands:
-    if (cmd == "look") {
-      this.look();
-      return null;
-    }
-    if (cmd == "clear") {
+    if (cmd == "look" || cmd == "rest") {
+      tookTurn = true;
+    } else if (cmd == "clear") {
       this.clearOutput();
       return null;
-    }
-    if (cmd == "help") {
+    } else if (cmd == "help") {
       var html = '<span class="help">Commands: clear, look, help</span><br>';
       this.print(html);
       return null;
     }
 
     // exact spelling of exits:
-    var exitNames = this.currentRoom.getExitNames();
-    for (var i=0; i<exitNames.length; i++) {
-      if (cmd == exitNames[i]) {
-        this.changeRoom(exitNames[i]);
-        return null;
+    if (!tookTurn) {
+      var exitNames = this.player.room.getExitNames();
+      for (var i=0; i<exitNames.length; i++) {
+        if (cmd == exitNames[i]) {
+          this.changeRoom(exitNames[i]);
+          tookTurn = true;
+        }
       }
     }
 
     // partial exit names:
-    var cmdLength = cmd.length;
-    for (var i=0; i<exitNames.length; i++) {
-      var exitPartial = exitNames[i].substring(0,cmdLength);
-      if (cmd == exitPartial) {
-        this.changeRoom(exitNames[i]);
-        return null;
+    if (!tookTurn) {
+      var cmdLength = cmd.length;
+      for (var i=0; i<exitNames.length; i++) {
+        var exitPartial = exitNames[i].substring(0,cmdLength);
+        if (cmd == exitPartial) {
+          this.changeRoom(exitNames[i]);
+          tookTurn = true;
+        }
       }
     }
 
-    this.print('<span class="error">Unknown command: '+cmd+'</span><br>');
+    if (tookTurn) {
+      this.takeTurn();
+    } else {
+      this.print('<span class="error">Unknown command: '+cmd+'</span><br>');
+    }
   },
 
   changeRoom: function(exitName) {
-    var room = this.currentRoom.getNextRoom(exitName);
-    this.currentRoom = room;
+    this.player.room.moveMob(this.player, exitName);
+    this.look();
+  },
+
+  takeTurn: function() {
+    for (var i=0; i<this.mobs.length; i++) {
+      this.mobs[i].takeTurn();
+    }
     this.look();
   }
 
