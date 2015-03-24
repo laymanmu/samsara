@@ -3,13 +3,13 @@ var Repository = function(repoName, instanceConstructor) {
   this.name            = repoName;
   this.constructor     = instanceConstructor;
   this.templates       = {};
-  this.randomTemplates = {};
+  this.randomTemplates = [];
 };
 
-Repository.prototype.addTemplate = function(name, template) {
+Repository.prototype.define = function(name, template) {
   this.templates[name] = template;
   if (template.isRandom) {
-    this.randomTemplates[name] = template;
+    this.randomTemplates.push(template);
   }
 };
 
@@ -27,5 +27,7 @@ Repository.prototype.create = function(name, overridingProperties) {
 };
 
 Repository.prototype.createRandom = function() {
-  return this.create(Object.keys(this.randomTemplates).random());
+  var index    = Helpers.randInt(0, this.randomTemplates.length-1);
+  var template = this.randomTemplates[index];
+  return new this.constructor(template);
 };

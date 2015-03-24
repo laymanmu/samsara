@@ -65,14 +65,12 @@ var App = {
 
   initMobs: function() {
     this.rooms[0].addMob(this.player);
-    this.addMob(new Mob({name:"deer", desc:"a big buck"}),    this.rooms[0]);
-    this.addMob(new Mob({name:"deer", desc:"a gentle fawn"}), this.rooms[1]);
-    this.addMob(new Mob({name:"deer", desc:"a quick doe"}),   this.rooms[1]);
-  },
-
-  addMob: function(mob, room) {
-    this.mobs.push(mob);
-    room.addMob(mob);
+    for (var i=0; i<Helpers.randInt(3,10); i++) {
+      var mob  = MobRepository.createRandom();
+      var room = this.rooms[Helpers.randInt(0,this.rooms.length-1)];
+      room.addMob(mob);
+      this.mobs.push(mob);
+    }
   },
 
   print: function(html) {

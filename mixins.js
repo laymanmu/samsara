@@ -7,14 +7,12 @@ var Mixins = {};
 
 Mixins.Acting = {};
 
-Mixins.Acting.Actor = {
+Mixins.Acting.Wanderer = {
   name:  'Wanderer',
   group: 'Acting',
   act: function() {
     if (this.hasMixin('Wander')) {
-      if (Helpers.randInt(1,100) > 50) {
-        this.tryMove();
-      }
+      this.tryMove();
     }
   }
 };

@@ -1,10 +1,10 @@
 
 var Mob = function(properties) {
-  properties  = properties      || {};
-  this._id    = "mob" + Helpers.getUniqueID();
-  this.name   = properties.name || "hungry ghost";
-  this.desc   = properties.desc || "a confused spirit being";
-  this.room   = properties.room || null;
+  this._id   = "mob" + Helpers.getUniqueID();
+  properties = properties      || {};
+  this.name  = properties.name || "hungry ghost";
+  this.desc  = properties.desc || "a confused spirit being";
+  this.room  = properties.room || null;
   // mixins:
   this.mixins      = {};
   this.mixinGroups = {};
@@ -12,9 +12,8 @@ var Mob = function(properties) {
   for (var i=0; i<mixins.length; i++) {
     var mixin = mixins[i];
     for (var key in mixin) {
-      if (!this.hasOwnProperty(key)) {
+      if (key != 'name' && key != 'group' && !this.hasOwnProperty(key)) {
         this[key] = mixin[key];
-        console.log("DEBUG: mob "+ this.name +" (id:"+this._id+") got mixin property: "+ key);
       }
     }
     this.mixins[mixin.name]       = true;
@@ -23,6 +22,7 @@ var Mob = function(properties) {
       mixin.call(this, properties);
     }
   }
+  console.log("DEBUG: new mob: ", this);
 };
 
 Mob.prototype.hasMixin = function(mixin) {
