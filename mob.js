@@ -22,7 +22,6 @@ var Mob = function(properties) {
       mixin.call(this, properties);
     }
   }
-  console.log("DEBUG: new mob: ", this);
 };
 
 Mob.prototype.hasMixin = function(mixin) {

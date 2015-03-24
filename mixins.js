@@ -20,7 +20,7 @@ Mixins.Acting.Wanderer = {
 Mixins.Acting.SittingSpeaker = {
   name: 'SittingSpeaker',
   group: 'Acting',
-  chanceToSpeak: 90,
+  chanceToSpeak: 10,
   act: function() {
     var prefix  = '<span class="speechPrefix">'+ this.nameThe(true) +' says: </span><span class="speech">';
     var postfix = '</span><br>';
@@ -28,7 +28,7 @@ Mixins.Acting.SittingSpeaker = {
       App.sendMessage(this, this.nameThe() +" repositions a bit while sitting");
     } else if (Helpers.randInt(0,100) < this.chanceToSpeak) {
       this.chanceToSpeak = this.chanceToSpeak-5<=0 ? 5 : this.chanceToSpeak-5;
-      var msg = prefix + 'hail the goer, friend' + postfix;
+      var msg = prefix + Helpers.randElement(Messages.Ascetic) + postfix;
       App.sendMessage(this, msg);
     }
   }

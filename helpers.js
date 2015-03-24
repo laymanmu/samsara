@@ -15,6 +15,10 @@ var Helpers = {
     return Math.round(Math.random())===1;
   },
 
+  randElement: function(list) {
+    return list[this.randInt(0, list.length-1)];
+  },
+
   showPopup: function(html) {
     var posX = App.mouse.x + 100 + "px";
     var posY = App.mouse.y + "px";
