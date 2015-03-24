@@ -31,6 +31,15 @@ var Helpers = {
 
   hidePopup: function() {
     document.getElementById('popup').style.display = 'none';
+  },
+
+  wrap: function(text, maxWidth, lineBreak, shouldCut) {
+    lineBreak = lineBreak || '<br>';
+    maxWidth  = maxWidth  || 75;
+    shouldCut = shouldCut || false;
+    if (!text) { return text; }
+    var regex = '.{1,' +maxWidth+ '}(\s|$)' + (shouldCut ? '|.{' +maxWidth+ '}|.+$' : '|\S+?(\s|$)');
+    return text.match(RegExp(regex,'g')).join(lineBreak);
   }
 
 };

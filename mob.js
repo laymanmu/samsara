@@ -44,9 +44,17 @@ Mob.prototype.nameThe = function(shouldCapitalize) {
   return prefix +" "+ this.name;
 };
 
+Mob.prototype.nameCapitalized = function() {
+  var first = this.name.charAt(0).toUpperCase();
+  var other = this.name.substring(1);
+  return first + other;
+};
+
 Mob.prototype.getPopupHTML = function() {
-  var html = '<span class="popupMobName">'+ this.name +'</span><br>';
-  html += '<span class="popupMobDesc">'  + this.desc  +'</span><br>';
+  var maxWidth = 50;
+  var desc = Helpers.wrap(this.desc, 25, '<br>', false);
+  var html = '<span class="popupMobName">'+ this.nameCapitalized() +'</span><br>';
+  html += '<span class="popupMobDesc">'+ desc +'</span><br>';
   html += '<br><span class="popupMobID"> id: '    + this._id   +'</span><br>';
   return html;
 };
