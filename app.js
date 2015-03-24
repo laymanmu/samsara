@@ -8,6 +8,7 @@ var App = {
   cmdHistory: {pos:0, partial:null, cmds:[]},
 
   init: function() {
+    this.player.messages = [];
     this.input  = document.getElementById('input');
     this.output = document.getElementById('output');
     this.initRooms();
@@ -19,7 +20,7 @@ var App = {
       e = e || window.event;
       var code = e.which==0 ? e.keyCode : e.which;
       App.handleInput(code);
-    }
+    };
   },
 
   initRooms: function() {
@@ -73,7 +74,11 @@ var App = {
     var html = '<span class="roomName">'+room.name+'</span><br />';
     html += '<span class="roomDesc">'+room.desc+'</span><br />';
     html += 'Exits: <span class="roomExits">'+room.describeExits()+'</span><br>';
-    html += 'Mobs:  <span class="roomMobs">'+room.describeMobs()+'</span><br>';
+    html += 'Mobs:  <span class="roomMobs">'+room.describeMobs()+'</span><br><br>';
+    for (var i=0; i<this.player.messages.length; i++) {
+      html += '<span class="message">  '+this.player.messages[i]+'</span><br>';
+    }
+    this.player.messages = [];
     this.print(html);
   },
 
@@ -173,17 +178,23 @@ var App = {
     }
 
     if (tookTurn) {
-      this.takeTurn();
+      this.update();
     } else {
       this.print('<span class="error">Unknown command: '+cmd+'</span><br>');
     }
   },
 
-  takeTurn: function() {
+  update: function() {
     for (var i=0; i<this.mobs.length; i++) {
       this.mobs[i].takeTurn();
     }
     this.look();
+  },
+
+  sendMessage: function(from, msg) {
+    if (from.room == this.player.room) {
+      this.player.messages.push(msg);
+    }
   }
 
 };

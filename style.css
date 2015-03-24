@@ -52,3 +52,8 @@ html, body {
 .settingsValue {
   color: #a9a9ff;
 }
+
+.message {
+  font-style: italic;
+  color: #cde;
+}
