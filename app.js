@@ -185,7 +185,9 @@ var App = {
   runCommand: function(cmd) {
     if (!cmd || cmd.length==0) return;
 
-    var tookTurn = false;
+    var tookTurn  = false;
+    var cmdLength = cmd.length;
+    var builtins  = ["look", "rest", "clear", "help", "settings"];
 
     // built-in commands:
     if (cmd == "look" || cmd == "rest") {
@@ -194,7 +196,7 @@ var App = {
       this.clearOutput();
       return null;
     } else if (cmd == "help") {
-      var html = '<span class="help">Commands: clear, help, look, rest, settings</span><br>';
+      var html = '<span class="help">Commands: '+ builtins.sort().join(', ') +'</span><br>';
       this.print(html);
       return null;
     } else if (cmd == "settings") {
@@ -232,7 +234,6 @@ var App = {
 
     // partial exit names:
     if (!tookTurn) {
-      var cmdLength = cmd.length;
       for (var i=0; i<exitNames.length; i++) {
         var exitPartial = exitNames[i].substring(0,cmdLength);
         if (cmd == exitPartial) {
