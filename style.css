@@ -86,3 +86,16 @@ html, body {
   font-style: italic;
   color: #890;
 }
+
+.speechPrefix {
+  color: #bc7abc;
+  font-style: normal;
+}
+
+.speech {
+  color: #000;
+  background-color: #fff;
+  font-style: normal;
+  padding-left: 3px;
+  padding-right: 3px;
+}

@@ -71,6 +71,10 @@ var App = {
       room.addMob(mob);
       this.mobs.push(mob);
     }
+    var ascetic = MobRepository.create('ascetic');
+    //this.rooms[this.rooms.length-1].addMob(ascetic);
+    this.rooms[0].addMob(ascetic);
+    this.mobs.push(ascetic);
   },
 
   print: function(html) {
@@ -122,6 +126,7 @@ var App = {
 
     // messages:
     if (this.player.messages.length > 0) {
+      html += '<br>';
       for (var i=0; i<this.player.messages.length; i++) {
         html += '<span class="message">  '+this.player.messages[i]+'</span><br>';
       }
