@@ -26,10 +26,32 @@ var App = {
   initRooms: function() {
     var park = new Room({name:"deer park", desc:"a shaded grove"});
     var pond = new Room({name:"small pond", desc:"a small pond surrounded by trees"});
+    var path = new Room({name:"dirt path", desc:"a dirt path"});
+    var road = new Room({name:"road", desc:"a cobblestone road"});
+    var hill = new Room({name:"hill", desc:"a grassy hill"});
+    var camp = new Room({name:"camp", desc:"an abandoned campground"});
+
     park.exits.add("north", pond);
     pond.exits.add("south", park);
+
+    park.exits.add("east", path);
+    path.exits.add("west", park);
+
+    path.exits.add("east", road);
+    road.exits.add("west", path);
+
+    road.exits.add("east", hill);
+    hill.exits.add("west", road);
+
+    hill.exits.add("east", camp);
+    camp.exits.add("west", hill);
+
     this.rooms.push(park);
     this.rooms.push(pond);
+    this.rooms.push(path);
+    this.rooms.push(road);
+    this.rooms.push(hill);
+    this.rooms.push(camp);
   },
 
   initMobs: function() {
