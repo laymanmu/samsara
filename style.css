@@ -2,6 +2,7 @@
 html, body {
   background-color: #123;
   font-family: monospace;
+  font-size: 16px;
   height: 100%;
   width: 100%;
   margin: 0;
@@ -21,12 +22,35 @@ html, body {
 }
 
 #input {
-  background-color: #fefefe;
+  background-color: #cecece;
   width: 98.8%;
   margin: 0;
   margin-top: 5px;
   padding: 5px;
   font-family: monospace;
+}
+
+#popup {
+  display: none;
+  position: absolute;
+  border: 2px solid #987;
+  background-color: #123;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  font-size: 12px;
+}
+
+.popupMobName {
+  font-size: 14px;
+  color: #ffcccc;
+}
+
+.popupMobDesc {
+}
+
+.popupMobID {
+  color: #888;
 }
 
 .roomName {
@@ -39,6 +63,11 @@ html, body {
 
 .roomExits {
   color: #abffab;
+}
+
+.roomMob {
+  color: #c8c8de;
+  border-bottom: 1px solid white;
 }
 
 .divider {

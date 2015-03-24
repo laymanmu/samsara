@@ -6,20 +6,29 @@ var App = {
   mobs:       [],
   player:     new Mob({name:"player", desc:"a human"}),
   cmdHistory: {pos:0, partial:null, cmds:[]},
+  mouse:      {x:0, y:0},
 
   init: function() {
     this.player.messages = [];
     this.input  = document.getElementById('input');
     this.output = document.getElementById('output');
+    this.initEvents();
     this.initRooms();
     this.initMobs();
     this.clearOutput();
     this.look();
     this.input.focus();
+  },
+
+  initEvents: function() {
     window.onkeypress = function(e) {
       e = e || window.event;
       var code = e.which==0 ? e.keyCode : e.which;
       App.handleInput(code);
+    };
+    document.onmousemove = function(e) {
+      App.mouse.x = e.pageX;
+      App.mouse.y = e.pageY;
     };
   },
 
@@ -96,12 +105,44 @@ var App = {
     var html = '<span class="roomName">'+room.name+'</span><br />';
     html += '<span class="roomDesc">'+room.desc+'</span><br />';
     html += 'Exits: <span class="roomExits">'+room.describeExits()+'</span><br>';
-    html += 'Mobs:  <span class="roomMobs">'+room.describeMobs()+'</span><br><br>';
-    for (var i=0; i<this.player.messages.length; i++) {
-      html += '<span class="message">  '+this.player.messages[i]+'</span><br>';
+
+    // mobs:
+    var mobs = [];
+    for (var i=0; i<room.mobs.length; i++) {
+      if (room.mobs[i] != this.player) {
+        mobs.push(room.mobs[i]);
+      }
     }
-    this.player.messages = [];
+    if (mobs.length > 0) {
+      html += 'Mobs: ';
+      for (var i=0; i<mobs.length; i++) {
+        html += '<span class="roomMob" id="'+ mobs[i]._id +'">'+ mobs[i].name +'</span>';
+        if (i<mobs.length-1)  html += ', ';
+      }
+      html += '<br>';
+    }
+
+    // messages:
+    if (this.player.messages.length > 0) {
+      html += '<br>'
+      for (var i=0; i<this.player.messages.length; i++) {
+        html += '<span class="message">  '+this.player.messages[i]+'</span><br>';
+      }
+      this.player.messages = [];
+    }
+
     this.print(html);
+
+    for (var i=0; i<mobs.length; i++) {
+      var span = document.getElementById(mobs[i]._id);
+      span.addEventListener("mouseenter", function(e) {
+        var mob = App.player.room.getMob(e.target.id);
+        Helpers.showPopup(mob.getPopupHTML());
+      });
+      span.addEventListener("mouseleave", function(e) {
+        Helpers.hidePopup();
+      });
+    }
   },
 
   handleInput: function(code) {
@@ -217,6 +258,6 @@ var App = {
     if (from.room == this.player.room) {
       this.player.messages.push(msg);
     }
-  }
+  },
 
 };

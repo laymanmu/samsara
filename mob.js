@@ -4,6 +4,7 @@ var Mob = function(properties) {
   this.name  = properties.name || "hungry ghost";
   this.desc  = properties.desc || "a confused spirit being";
   this.room  = properties.room || null;
+  this._id   = "mob" + Helpers.getUniqueID();
 };
 
 Mob.prototype.takeTurn = function() {
@@ -27,4 +28,11 @@ Mob.prototype.takeTurn = function() {
     }
 
   }
+};
+
+Mob.prototype.getPopupHTML = function() {
+  var html = '<span class="popupMobName">'+ this.name +'</span><br>';
+  html += '<span class="popupMobDesc">'  + this.desc  +'</span><br>';
+  html += '<br><span class="popupMobID"> id: '    + this._id   +'</span><br>';
+  return html;
 };

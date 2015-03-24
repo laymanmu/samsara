@@ -26,6 +26,14 @@ Room.prototype.moveMob = function(mob, exitName) {
   newRoom.addMob(mob);
 };
 
+Room.prototype.getMob = function(id) {
+  for (var i=0; i<this.mobs.length; i++) {
+    if (this.mobs[i]._id == id) {
+      return this.mobs[i];
+    }
+  }
+};
+
 Room.prototype.describeMobs = function() {
   var desc = '<span class="roomMobs">';
   for (var i=0; i<this.mobs.length; i++) {
