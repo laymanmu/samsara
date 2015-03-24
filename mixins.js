@@ -11,7 +11,7 @@ Mixins.Acting.Wanderer = {
   name:  'Wanderer',
   group: 'Acting',
   act: function() {
-    if (this.hasMixin('Wander')) {
+    if (Helpers.randBool() && this.hasMixin('Wander')) {
       this.tryMove();
     }
   }
@@ -33,14 +33,14 @@ Mixins.Moving.Wander = {
     var oldRoom = this.room;
     var newRoom = this.room.getNextRoom(names[index]);
     // send exit message:
-    App.sendMessage(this, "a "+ this.name +" exited "+ names[index]);
+    App.sendMessage(this, this.nameOne() +" exited "+ names[index]);
     this.room.moveMob(this, names[index]);
     // send enter message:
     var newRoomExitNames = newRoom.getExitNames();
     for (var i=0; i<newRoomExitNames.length;  i++) {
       var room = newRoom.getNextRoom(newRoomExitNames[i]);
       if (room == oldRoom) {
-        App.sendMessage(this, "a "+ this.name +" entered from the "+ newRoomExitNames[i]);
+        App.sendMessage(this, this.nameOne() +" entered from the "+ newRoomExitNames[i]);
         break;
       }
     }
