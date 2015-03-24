@@ -102,8 +102,8 @@ var App = {
 
   look: function() {
     var room = this.player.room;
-    var html = '<span class="roomName">'+room.name+'</span><br />';
-    html += '<span class="roomDesc">'+room.desc+'</span><br />';
+    var html = '<span class="roomName">'+room.name+'</span><br>';
+    html += '<span class="roomDesc">'+room.desc+'</span><br>';
     html += 'Exits: <span class="roomExits">'+room.describeExits()+'</span><br>';
 
     // mobs:
@@ -124,7 +124,6 @@ var App = {
 
     // messages:
     if (this.player.messages.length > 0) {
-      html += '<br>'
       for (var i=0; i<this.player.messages.length; i++) {
         html += '<span class="message">  '+this.player.messages[i]+'</span><br>';
       }
