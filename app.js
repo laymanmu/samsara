@@ -248,7 +248,10 @@ var App = {
 
   update: function() {
     for (var i=0; i<this.mobs.length; i++) {
-      this.mobs[i].takeTurn();
+      var mob = this.mobs[i];
+      if (mob.hasMixin('Acting')) {
+        mob.act();
+      }
     }
     this.look();
   },

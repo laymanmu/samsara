@@ -1,33 +1,48 @@
 
 var Mob = function(properties) {
-  properties = properties      || {};
-  this.name  = properties.name || "hungry ghost";
-  this.desc  = properties.desc || "a confused spirit being";
-  this.room  = properties.room || null;
-  this._id   = "mob" + Helpers.getUniqueID();
-};
-
-Mob.prototype.takeTurn = function() {
-  if (!this.room) return;
-  if (Helpers.randBool()) {
-    var names   = this.room.getExitNames();
-    var index   = Helpers.randInt(0, names.length-1);
-    var oldRoom = this.room;
-    var newRoom = this.room.getNextRoom(names[index]);
-
-    App.sendMessage(this, "a "+ this.name +" exited "+ names[index]);
-    this.room.moveMob(this, names[index]);
-
-    var newRoomExitNames = newRoom.getExitNames();
-    for (var i=0; i<newRoomExitNames.length;  i++) {
-      var room = newRoom.getNextRoom(newRoomExitNames[i]);
-      if (room == oldRoom) {
-        App.sendMessage(this, "a "+ this.name +" entered from the "+ newRoomExitNames[i]);
-        break;
+  properties  = properties      || {};
+  this._id    = "mob" + Helpers.getUniqueID();
+  this.name   = properties.name || "hungry ghost";
+  this.desc   = properties.desc || "a confused spirit being";
+  this.room   = properties.room || null;
+  // mixins:
+  this.mixins      = {};
+  this.mixinGroups = {};
+  var mixins       = properties.mixins || [];
+  for (var i=0; i<mixins.length; i++) {
+    var mixin = mixins[i];
+    for (var key in mixin) {
+      if (!this.hasOwnProperty(key)) {
+        this[key] = mixin[key];
+        console.log("DEBUG: mob "+ this.name +" (id:"+this._id+") got mixin property: "+ key);
       }
     }
-
+    this.mixins[mixin.name]       = true;
+    this.mixinGroups[mixin.group] = true;
+    if (mixin.init) {
+      mixin.call(this, properties);
+    }
   }
+};
+
+Mob.prototype.hasMixin = function(mixin) {
+  if (typeof mixin === 'object') {
+    return this.mixins[mixin.name] || this.mixinGroups[mixin.name];
+  } else {
+    return this.mixins[mixin] || this.mixinGroups[mixin];
+  }
+};
+
+Mob.prototype.nameOne = function(shouldCapitalize) {
+  var prefixes = shouldCapitalize ? ['A','An'] : ['a','an'];
+  var first    = this.name.charAt(0).toLowerCase();
+  var prefix   = 'aeiou'.indexOf(first)<0 ? prefixes[0] : prefixes[1];
+  return prefix +" "+ this.name;
+};
+
+Mob.prototype.nameThe = function(shouldCapitalize) {
+  var prefix = shouldCapitalize ? 'The' : 'the';
+  return prefix +" "+ this.name;
 };
 
 Mob.prototype.getPopupHTML = function() {
