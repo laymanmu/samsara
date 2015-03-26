@@ -1,6 +1,4 @@
 
-var _debug = true;
-
 var Mob = function(properties) {
   Entity.call(this, properties);
   properties = properties      || {};

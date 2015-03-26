@@ -7,18 +7,22 @@
     <script src="app.js"></script>
     <script src="keyboard.js"></script>
     <script src="keystore.js"></script>
-    <script src="entity.js"></script>
     <script src="helpers.js"></script>
+    <script src="entity.js"></script>
     <script src="room.js"></script>
     <script src="mob.js"></script>
+    <script src="action.js"></script>
     <script src="mixins.js"></script>
     <script src="repository.js"></script>
     <script src="mobRepository.js"></script>
     <script src="messages.js"></script>
   </head>
   <body onload="App.init();">
-    <div id="output">output</div>
-    <input id="input" type="text" placeholder="input"/>
+    <table id="app">
+      <tr><td id="output">output</td></tr>
+      <tr><td id="actions"></td></tr>
+      <tr><td><input id="input" type="text" placeholder="input"/></td></tr>
+    </table>
     <div id="popup"></div>
   </body>
 </html>

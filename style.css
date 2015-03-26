@@ -6,24 +6,45 @@ html, body {
   height: 100%;
   width: 100%;
   margin: 0;
-  padding: 0;
-  text-align: center;
+  padding: 5px;
+  text-align: left;
+}
+
+td {
+  vertical-align: top;
+}
+
+#app {
+  background-color: #111;
 }
 
 #output {
   background-color: #111;
   color: #eee;
-  width: 99.2%;
-  height: 80%;
+  width:  800px;
+  height: 400px;
   margin: 0;
-  padding: 5px;
+  padding: 0;
   text-align: left;
   overflow: auto;
 }
 
+#actions {
+  background-color: #333;
+  width: 800px;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.actionIcon {
+  width: 50px;
+  border: 2px solid green;
+}
+
 #input {
   background-color: #cecece;
-  width: 98.8%;
+  width: 800px;
   margin: 0;
   margin-top: 5px;
   padding: 5px;

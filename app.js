@@ -4,6 +4,7 @@ var App = {
   settings:   {alwaysClearScreen:true},
   rooms:      [],
   mobs:       [],
+  actions:    [],
   cmdHistory: {pos:0, partial:null, cmds:[]},
   mouse:      {x:0, y:0},
   player:     null,
@@ -15,6 +16,7 @@ var App = {
     this.initRooms();
     this.initMobs();
     this.initPlayer();
+    this.initActions();
     this.clearOutput();
     this.look();
     this.input.focus();
@@ -24,6 +26,19 @@ var App = {
     this.player = new Mob({name:"player", desc:"a human"}),
     this.player.messages = [];
     this.rooms[0].addMob(this.player);
+  },
+
+  initActions: function() {
+    var actions    = this.actions;
+    var actionsDiv = document.getElementById('actions');
+    function addAction(properties) {
+      var action = new Action(properties);
+      actions.push(action);
+      actionsDiv.appendChild(action.image);
+    }
+    addAction({name:'look',   command:'look',  icon:'Icon.1_11.png',desc:'look at the room or your target'});
+    addAction({name:'respect',command:'rest',  icon:'Icon.7_06.png',desc:'rest'});
+    addAction({name:'wander', command:'wander',icon:'Icon.4_33.png',desc:'wander around randomly'});
   },
 
   initEvents: function() {
@@ -107,12 +122,26 @@ var App = {
     this.output.innerHTML = "";
   },
 
-  getRoom: function(id) {
-    for (var i=0; i<this.rooms.length; i++) {
-      if (this.rooms[i].id == id) {
-        return this.rooms[i];
+  findEntity: function(id, list) {
+    for (var i=0; i<list.length; i++) {
+      if (list[i].id == id) {
+        return list[i];
       }
     }
+  },
+
+  getRoom: function(id) {
+    return this.findEntity(id, this.rooms);
+  },
+
+  getAction: function(id) {
+    return this.findEntity(id, this.actions);
+  },
+
+  wander: function() {
+    var exitName = Helpers.randElement(this.player.room.getExitNames());
+    this.sendMessage(this.player, 'you wandered towards the '+ exitName);
+    this.runCommand(exitName);
   },
 
   look: function() {
@@ -252,6 +281,9 @@ var App = {
         }
       }
       this.print(html);
+      return null;
+    } else if (cmd == "wander") {
+      this.wander();
       return null;
     }
 
