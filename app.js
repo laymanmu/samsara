@@ -162,17 +162,21 @@ var App = {
 
     this.print(html);
 
-    // setup exit popup events:
+
+    // setup exit popup & click events:
     for (var i=0; i<exitRooms.length; i++) {
       var span = document.getElementById(exitRooms[i].id);
+      span.exitName = exitNames[i];
       span.addEventListener("mouseenter", function(e) {
         var room = App.getRoom(e.target.id);
         Helpers.showPopup(room.getPopupHTML());
       });
+      span.addEventListener("click", function(e) {
+        App.runCommand(e.target.exitName);
+      });
       span.addEventListener("mouseleave", function(e) {
         Helpers.hidePopup();
       });
-
     }
 
     // setup mob popup events:
