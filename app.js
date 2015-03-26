@@ -107,11 +107,33 @@ var App = {
     this.output.innerHTML = "";
   },
 
+  getRoom: function(id) {
+    for (var i=0; i<this.rooms.length; i++) {
+      if (this.rooms[i].id == id) {
+        return this.rooms[i];
+      }
+    }
+  },
+
   look: function() {
     var room = this.player.room;
     var html = '<span class="roomName">'+room.name+'</span><br>';
     html += '<span class="roomDesc">'+room.desc+'</span><br>';
-    html += 'Exits: <span class="roomExits">'+room.describeExits()+'</span><br>';
+
+    // exits:
+    var exitNames = room.getExitNames();
+    var exitRooms = [];
+    if (exitNames.length > 0) {
+      html += 'Exits: ';
+      for (var i=0; i<exitNames.length; i++) {
+        var name = exitNames[i];
+        var exit = room.getNextRoom(name);
+        exitRooms.push(exit);
+        html += '<span class="roomExit" id="'+exit.id+'">'+name+'</span>';
+        if (i<exitNames.length-1) html += ', ';
+      }
+      html += '<br>';
+    }
 
     // mobs:
     var mobs = [];
@@ -140,13 +162,24 @@ var App = {
 
     this.print(html);
 
+    // setup exit popup events:
+    for (var i=0; i<exitRooms.length; i++) {
+      var span = document.getElementById(exitRooms[i].id);
+      span.addEventListener("mouseenter", function(e) {
+        var room = App.getRoom(e.target.id);
+        Helpers.showPopup(room.getPopupHTML());
+      });
+      span.addEventListener("mouseleave", function(e) {
+        Helpers.hidePopup();
+      });
+
+    }
+
+    // setup mob popup events:
     for (var i=0; i<mobs.length; i++) {
       var span = document.getElementById(mobs[i].id);
       span.addEventListener("mouseenter", function(e) {
         var mob = App.player.room.getMob(e.target.id);
-        if (!mob) {
-          console.log("no mob found? e: ", e);
-        }
         Helpers.showPopup(mob.getPopupHTML());
       });
       span.addEventListener("mouseleave", function(e) {

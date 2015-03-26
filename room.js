@@ -1,11 +1,14 @@
 
 var Room = function(properties) {
+  Entity.call(this, properties);
   properties = properties || {};
   this.name  = properties.name  || "forest";
   this.desc  = properties.desc  || "you are surrounded by trees";
   this.exits = properties.exits || new KeyStore();
   this.mobs  = properties.mobs  || [];
 };
+
+Room.prototype = Object.create(Entity.prototype);
 
 Room.prototype.addMob = function(mob) {
   this.mobs.push(mob);
@@ -32,28 +35,15 @@ Room.prototype.getMob = function(id) {
       return this.mobs[i];
     }
   }
-  console.log("WARN: no mob with id: "+ id +", mobs: ", this.mobs);
 };
-
-Room.prototype.describeMobs = function() {
-  var desc = '<span class="roomMobs">';
-  for (var i=0; i<this.mobs.length; i++) {
-    if (this.mobs[i].name != "player") {
-      desc += this.mobs[i].name;
-      desc += " ("+ this.mobs[i].desc +")";
-      if (i<this.mobs.length-1) {
-        desc += ", ";
-      }
-    }
-  }
-  desc += '</span>';
-  return desc;
-}
 
 Room.prototype.describeExits = function() {
   var desc = "[ ";
   var names = this.exits.keys();
+  var name, exit;
   for (var i=0; i<names.length; i++) {
+    name = names[i];
+    exit = this.exits[name];
     desc += names[i];
     if (i<names.length-1) {
       desc += " ";
@@ -77,10 +67,4 @@ Room.prototype.removeExit = function(name) {
 
 Room.prototype.getNextRoom = function(exitName) {
   return this.exits.get(exitName);
-};
-
-Room.prototype.getPopupHTML = function() {
-  var html = '<span class="popupName">'+ this.name +'</span><br>';
-  html += '<span class="popupDesc">'+ this.desc +'</span><br>';
-  return html;
 };
