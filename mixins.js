@@ -17,8 +17,8 @@ Mixins.Acting.Wanderer = {
   }
 };
 
-Mixins.Acting.SittingSpeaker = {
-  name: 'SittingSpeaker',
+Mixins.Acting.Sitter = {
+  name: 'Sitter',
   group: 'Acting',
   chanceToSpeak: 10,
   act: function() {
@@ -26,8 +26,10 @@ Mixins.Acting.SittingSpeaker = {
     var postfix = '</span><br>';
     if (Helpers.randInt(1,100) < 3) {
       App.sendMessage(this, this.nameThe() +" repositions a bit while sitting");
-    } else if (Helpers.randInt(0,100) < this.chanceToSpeak) {
-      this.chanceToSpeak = this.chanceToSpeak-5<=0 ? 5 : this.chanceToSpeak-5;
+    } else if (Helpers.randInt(0,100) < this.chanceToSpeak--) {
+      if (this.chanceToSpeak < 0) {
+        this.chanceToSpeak = 10;
+      }
       var msg = prefix + Helpers.randElement(Messages.Ascetic) + postfix;
       App.sendMessage(this, msg);
     }

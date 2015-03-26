@@ -41,5 +41,5 @@ MobRepository.define('ascetic', {
   name: 'ascetic',
   desc: 'this homeless person sits patiently with their eyes closed',
   isRandom: true,
-  mixins: [ Mixins.Acting.SittingSpeaker ]
+  mixins: [ Mixins.Acting.Sitter ]
 });

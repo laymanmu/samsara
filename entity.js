@@ -1,8 +1,41 @@
 
 var Entity = function(properties) {
   this.id    = "entity" + Helpers.getUniqueID();
+  properties = properties      || {};
   this.name  = properties.name || "entity";
   this.desc  = properties.desc || "an entity";
+  this.initMixins(properties);
+};
+
+Entity.prototype.initMixins = function(properties) {
+  this.mixins      = {};
+  this.mixinGroups = {};
+  if (properties.mixins) {
+    for (var i=0; i<properties.mixins.length; i++) {
+      this.addMixin(properties.mixins[i]);
+    }
+  }
+};
+
+Entity.prototype.addMixin = function(mixin) {
+  for (var key in mixin) {
+    if (key != 'name' && key != 'group' && !this.hasOwnProperty(key)) {
+      this[key] = mixin[key];
+    }
+  }
+  this.mixins[mixin.name]       = true;
+  this.mixinGroups[mixin.group] = true;
+  if (mixin.init) {
+    mixin.call(this, properties);
+  }
+};
+
+Entity.prototype.hasMixin = function(mixin) {
+  if (typeof mixin === 'object') {
+    return this.mixins[mixin.name] || this.mixinGroups[mixin.name];
+  } else {
+    return this.mixins[mixin] || this.mixinGroups[mixin];
+  }
 };
 
 Entity.prototype.nameOne = function(shouldCapitalize) {
