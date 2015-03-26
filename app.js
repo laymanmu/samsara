@@ -4,20 +4,26 @@ var App = {
   settings:   {alwaysClearScreen:true},
   rooms:      [],
   mobs:       [],
-  player:     new Mob({name:"player", desc:"a human"}),
   cmdHistory: {pos:0, partial:null, cmds:[]},
   mouse:      {x:0, y:0},
+  player:     null,
 
   init: function() {
-    this.player.messages = [];
     this.input  = document.getElementById('input');
     this.output = document.getElementById('output');
     this.initEvents();
     this.initRooms();
     this.initMobs();
+    this.initPlayer();
     this.clearOutput();
     this.look();
     this.input.focus();
+  },
+
+  initPlayer: function() {
+    this.player = new Mob({name:"player", desc:"a human"}),
+    this.player.messages = [];
+    this.rooms[0].addMob(this.player);
   },
 
   initEvents: function() {
@@ -64,7 +70,6 @@ var App = {
   },
 
   initMobs: function() {
-    this.rooms[0].addMob(this.player);
     for (var i=0; i<Helpers.randInt(3,10); i++) {
       var mob  = MobRepository.createRandom();
       var room = this.rooms[Helpers.randInt(0,this.rooms.length-1)];
@@ -118,7 +123,7 @@ var App = {
     if (mobs.length > 0) {
       html += 'Mobs: ';
       for (var i=0; i<mobs.length; i++) {
-        html += '<span class="roomMob" id="'+ mobs[i]._id +'">'+ mobs[i].name +'</span>';
+        html += '<span class="roomMob" id="'+ mobs[i].id +'">'+ mobs[i].name +'</span>';
         if (i<mobs.length-1)  html += ', ';
       }
       html += '<br>';
@@ -136,9 +141,12 @@ var App = {
     this.print(html);
 
     for (var i=0; i<mobs.length; i++) {
-      var span = document.getElementById(mobs[i]._id);
+      var span = document.getElementById(mobs[i].id);
       span.addEventListener("mouseenter", function(e) {
         var mob = App.player.room.getMob(e.target.id);
+        if (!mob) {
+          console.log("no mob found? e: ", e);
+        }
         Helpers.showPopup(mob.getPopupHTML());
       });
       span.addEventListener("mouseleave", function(e) {

@@ -41,15 +41,15 @@ html, body {
   font-size: 12px;
 }
 
-.popupMobName {
+.popupName {
   font-size: 14px;
   color: #ffcccc;
 }
 
-.popupMobDesc {
+.popupDesc {
 }
 
-.popupMobID {
+.popupID {
   color: #888;
 }
 

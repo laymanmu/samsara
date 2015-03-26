@@ -28,10 +28,11 @@ Room.prototype.moveMob = function(mob, exitName) {
 
 Room.prototype.getMob = function(id) {
   for (var i=0; i<this.mobs.length; i++) {
-    if (this.mobs[i]._id == id) {
+    if (this.mobs[i].id == id) {
       return this.mobs[i];
     }
   }
+  console.log("WARN: no mob with id: "+ id +", mobs: ", this.mobs);
 };
 
 Room.prototype.describeMobs = function() {
@@ -76,4 +77,10 @@ Room.prototype.removeExit = function(name) {
 
 Room.prototype.getNextRoom = function(exitName) {
   return this.exits.get(exitName);
+};
+
+Room.prototype.getPopupHTML = function() {
+  var html = '<span class="popupName">'+ this.name +'</span><br>';
+  html += '<span class="popupDesc">'+ this.desc +'</span><br>';
+  return html;
 };
