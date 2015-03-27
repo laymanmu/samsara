@@ -227,8 +227,9 @@ Screens.Play = {
 //==================================================================
 
 Screens.Start = {
-  layout: '<p>start</p>',
+  layout: '<div><span id="app">press Enter to start</span></div>',
   enter: function(properties) {
+    Screens.layoutContainer.innerHTML = this.layout;
   },
   exit: function() {
   },
