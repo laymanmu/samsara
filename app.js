@@ -343,15 +343,22 @@ var App = {
   },
 
   update: function() {
+    // mobs:
     for (var i=0; i<this.mobs.length; i++) {
       var mob = this.mobs[i];
       if (mob.hasMixin('Acting')) {
         mob.act();
       }
     }
+    // actions:
+    for (var i=0; i<this.actions.length; i++) {
+      this.actions[i].update();
+    }
+    // player target:
     if (this.player.target && this.player.target.room.id != this.player.room.id) {
       this.player.target = null;
     }
+    // screen:
     this.updateContextWindow();
     this.look();
   },

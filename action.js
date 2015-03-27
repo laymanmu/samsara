@@ -7,7 +7,9 @@ var Action = function(properties) {
   this.image           = document.createElement('img');
   this.image.id        = this.id;
   this.image.src       = 'assets/'+this.iconName;
-  this.image.className = "actionIcon";
+  this.image.className = "actionIcon actionReady";
+  this.coolDownCost  = 2;
+  this.coolDownValue = 0;
   this.initEvents();
 };
 
@@ -23,6 +25,38 @@ Action.prototype.initEvents = function() {
     Helpers.hidePopup();
   });
   this.image.addEventListener("click", function(e) {
-    App.runCommand(e.target.command);
+    var action = App.getAction(e.target.id);
+    action.use();
   });
+};
+
+Action.prototype.update = function() {
+  if (this.coolDownValue > 0) {
+    this.coolDownValue--;
+    if (this.coolDownValue == 0) {
+      this.image.className = "actionIcon actionReady";
+    }
+  }
+};
+
+Action.prototype.use = function() {
+  if (this.coolDownValue == 0) {
+    App.runCommand(this.command);
+    this.coolDownValue = this.coolDownCost;
+    if (this.coolDownValue != 0) {
+      this.image.className = "actionIcon actionNotReady";
+    }
+  }
+};
+
+Action.prototype.getPopupHTML = function() {
+  var html = Entity.prototype.getPopupHTML.call(this);
+  html += '<hr/><table>';
+  html += '<tr><td>id:     </td><td>'+ this.id +'</td></tr>';
+  html += '<tr><td>cooldown cost: </td><td>'+ this.coolDownCost +'</td></tr>';
+  if (this.coolDownValue > 0) {
+    html += '<tr><td>cooldown value: </td><td>'+ this.coolDownValue +'</td></tr>';
+  }
+  html += '</table>';
+  return html;
 };

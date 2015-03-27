@@ -70,7 +70,17 @@ img, div {
 
 .actionIcon {
   width: 50px;
+  border: 2px solid black;
+}
+
+.actionReady {
   border: 2px solid green;
+  opacity: 1.0;
+}
+
+.actionNotReady {
+  border: 2px solid red;
+  opacity: 0.1;
 }
 
 #input {
