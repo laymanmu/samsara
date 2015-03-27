@@ -8,8 +8,26 @@ var ActionRepository = new Repository("actions", Action);
 ActionRepository.define('look', {
   name:    'look',
   command: 'look',
-  icon:    'Icon.1_11.png',
   desc:    'look at something',
-  coolDownCost: 2,
+  icon:    'Icon.1_11.png',
+  coolDownCost: 0,
+  isSustained:  false
+});
+
+ActionRepository.define('respect', {
+  name:    'respect',
+  command: 'rest',
+  desc:    'offer respect',
+  icon:    'Icon.7_06.png',
+  coolDownCost: 1,
+  isSustained:  false
+});
+
+ActionRepository.define('wander', {
+  name:    'wander',
+  command: 'wander',
+  desc:    'wander around randomly',
+  icon:    'Icon.4_33.png',
+  coolDownCost: 0,
   isSustained:  false
 });

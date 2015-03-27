@@ -4,8 +4,8 @@ var Action = function(properties) {
   properties        = properties         || {};
   this.command      = properties.command || 'rest';
   this.iconName     = properties.icon    || 'Icon.4_18.png';
-  this.coolDownCost = properties.coolDownCost || 2;
-  this.isSustained  = properties.isSustained  || false;
+  this.coolDownCost = (properties.coolDownCost!=null ? properties.coolDownCost : 1);
+  this.isSustained  = (properties.isSustained!=null  ? properties.isSustained  : false);
   this.image           = document.createElement('img');
   this.image.id        = this.id;
   this.image.src       = 'assets/'+this.iconName;

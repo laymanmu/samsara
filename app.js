@@ -15,16 +15,13 @@ var App = {
   },
 
   initPlayer: function() {
-    this.player = new Mob({name:"player", desc:"a human"}),
-    this.rooms[0].addMob(this.player);
+    this.player = new Mob({name:"player", desc:"a human"});
+    Helpers.randElement(this.rooms).addMob(this.player);
     this.player.messages = [];
     this.player.actions  = [];
-    function addAction(properties) {
-      App.player.actions.push(new Action(properties));
-    }
-    addAction({name:'look',   command:'look',  icon:'Icon.1_11.png',desc:'look at the room or your target'});
-    addAction({name:'respect',command:'rest',  icon:'Icon.7_06.png',desc:'rest'});
-    addAction({name:'wander', command:'wander',icon:'Icon.4_33.png',desc:'wander around randomly'});
+    this.player.actions.push(ActionRepository.create('look'));
+    this.player.actions.push(ActionRepository.create('respect'));
+    this.player.actions.push(ActionRepository.create('wander'));
   },
 
   initEvents: function() {

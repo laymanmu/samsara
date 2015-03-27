@@ -18,7 +18,7 @@ RoomRepository.define('pond', {
 //==================================================================
 
 RoomRepository.define('tent', {
-  group: 'Outdoor',
+  group: 'Indoor',
   name:  'Large Tent',
   desc:  'A large tent',
   isRandom: true,
