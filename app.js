@@ -16,7 +16,7 @@ var App = {
 
   initPlayer: function() {
     this.player = new Mob({name:"player", desc:"a human"});
-    Helpers.randElement(this.rooms).addMob(this.player);
+    this.rooms[0].addMob(this.player);
     this.player.messages = [];
     this.player.actions  = [];
 
@@ -53,34 +53,32 @@ var App = {
   },
 
   initRooms: function() {
-    var park = new Room({name:"deer park", desc:"a shaded grove"});
-    var pond = new Room({name:"small pond", desc:"a small pond surrounded by trees"});
-    var path = new Room({name:"dirt path", desc:"a dirt path"});
-    var road = new Room({name:"road", desc:"a cobblestone road"});
-    var hill = new Room({name:"hill", desc:"a grassy hill"});
-    var camp = new Room({name:"camp", desc:"an abandoned campground"});
+    var parkWall1 = RoomRepository.create('deer_park_wall');
+    var parkGate  = RoomRepository.create('deer_park_entrance');
+    var deerPark  = RoomRepository.create('inside_deer_park');
+    var parkWall2 = RoomRepository.create('deer_park_wall');
 
-    park.exits.add("north", pond);
-    pond.exits.add("south", park);
+    deerPark.exits.add('gate', parkGate);
+    parkGate.exits.add('gate', deerPark);
+    parkGate.exits.add('northeast', parkWall1);
+    parkWall1.exits.add('southwest', parkGate);
+    parkGate.exits.add('southwest', parkWall2);
+    parkWall2.exits.add('northeast', parkGate);
 
-    park.exits.add("east", path);
-    path.exits.add("west", park);
+    this.rooms.push(parkGate);
+    this.rooms.push(deerPark);
+    this.rooms.push(parkWall1);
+    this.rooms.push(parkWall2);
 
-    path.exits.add("east", road);
-    road.exits.add("west", path);
-
-    road.exits.add("east", hill);
-    hill.exits.add("west", road);
-
-    hill.exits.add("east", camp);
-    camp.exits.add("west", hill);
-
-    this.rooms.push(park);
-    this.rooms.push(pond);
-    this.rooms.push(path);
-    this.rooms.push(road);
-    this.rooms.push(hill);
-    this.rooms.push(camp);
+    var lastRoom = parkWall2;
+    for (var i=0; i<100; i++) {
+      var nextRoom = RoomRepository.createRandom();
+      var exitPair = Helpers.randElement(RoomRepository.exitPairs);
+      lastRoom.exits.add(exitPair[0], nextRoom);
+      nextRoom.exits.add(exitPair[1], lastRoom);
+      this.rooms.push(nextRoom);
+      lastRoom = nextRoom;
+    }
   },
 
   initMobs: function() {
@@ -180,7 +178,7 @@ var App = {
       Screens.sendMessage(this.player, "command: "+ cmd);
       Screens.refresh();
     } else {
-      this.print('<span class="error">Unknown command: '+cmd+'</span><br>');
+      console.log("ERROR: runCommand() unknown command: "+ cmd);
     }
   },
 
