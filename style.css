@@ -147,9 +147,12 @@ img, div {
   color: #a9a9ff;
 }
 
-.message {
-  font-style: italic;
+.newLogMessage {
   color: #890;
+}
+
+.oldLogMessage {
+  color: #888;
 }
 
 .speechPrefix {

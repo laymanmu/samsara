@@ -7,7 +7,7 @@ var App = {
   actions:    [],
   cmdHistory: {pos:0, partial:null, cmds:[]},
   mouse:      {x:0, y:0},
-  ui:         {},
+  ui:         {newLogMessages:[]},
   player:     null,
 
   init: function() {
@@ -119,6 +119,7 @@ var App = {
 
   scrollToBottom: function() {
     this.ui.output.scrollTop = this.ui.output.scrollHeight;
+    this.ui.log.scrollTop = this.ui.log.scrollHeight;
   },
 
   clearOutput: function() {
@@ -197,15 +198,6 @@ var App = {
         if (i<mobs.length-1)  html += ', ';
       }
       html += '<br>';
-    }
-
-    // messages:
-    if (this.player.messages.length > 0) {
-      html += '<br>';
-      for (var i=0; i<this.player.messages.length; i++) {
-        html += '<span class="message">  '+this.player.messages[i]+'</span><br>';
-      }
-      this.player.messages = [];
     }
 
     // add html to document:
@@ -353,6 +345,11 @@ var App = {
   },
 
   update: function() {
+    // log:
+    for (var i=0; i<this.ui.newLogMessages.length; i++) {
+      this.ui.newLogMessages[i].className = "oldLogMessage";
+    }
+    this.ui.newLogMessages = [];
     // mobs:
     for (var i=0; i<this.mobs.length; i++) {
       var mob = this.mobs[i];
@@ -375,7 +372,10 @@ var App = {
 
   sendMessage: function(from, msg) {
     if (from.room == this.player.room) {
-      this.player.messages.push(msg);
+      var id = Helpers.getUniqueID();
+      this.ui.log.innerHTML += '<span id="'+ id +'" class="newMLogessage">'+ msg + '</span><br>';
+      this.ui.newLogMessages.push(document.getElementById(id));
+      this.scrollToBottom();
     }
   },
 
