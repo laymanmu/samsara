@@ -164,6 +164,7 @@ var App = {
     }
 
     if (tookTurn) {
+      Screens.sendMessage(this.player, "command: "+ cmd);
       Screens.refresh();
     } else {
       this.print('<span class="error">Unknown command: '+cmd+'</span><br>');

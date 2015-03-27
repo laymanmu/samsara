@@ -4,7 +4,7 @@ var Helpers = {
   _nextID: 1,
 
   getUniqueID: function() {
-    return this._nextID++;
+    return '_' + this._nextID++;
   },
 
   randInt: function(min, max) {

@@ -149,11 +149,11 @@ img, div {
 }
 
 .newLogMessage {
-  color: #890;
+  color: #dee;
 }
 
 .oldLogMessage {
-  color: #888;
+  color: #666;
 }
 
 .speechPrefix {

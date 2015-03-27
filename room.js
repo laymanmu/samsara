@@ -25,8 +25,18 @@ Room.prototype.removeMob = function(mob) {
 Room.prototype.moveMob = function(mob, exitName) {
   var newRoom = this.getNextRoom(exitName);
   if (!newRoom) return;
+  Screens.sendMessage(mob, mob.nameOne() +" exited to the "+ exitName);
   this.removeMob(mob);
   newRoom.addMob(mob);
+  var newRoomExits = newRoom.getExitNames();
+  var enteredFrom  = "";
+  for (var i=0; i<newRoomExits.length; i++) {
+    if (newRoom.getNextRoom(newRoomExits[i]).id == this.id) {
+      enteredFrom = newRoomExits[i];
+      break;
+    }
+  }
+  Screens.sendMessage(mob, mob.nameOne() +" entered from the "+ enteredFrom);
 };
 
 Room.prototype.getMob = function(id) {

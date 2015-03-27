@@ -25,8 +25,8 @@ var Screens = {
   },
 
   sendMessage: function(from, msg) {
-    if (this.currentScreen && this.currentScreen.sendMessage) {
-      this.currentScreen.sendMessage(from, msg);
+    if (this.currentScreen == Screens.Play) {
+      this.currentScreen.addLogMessage(from, msg);
     }
   }
 
@@ -44,7 +44,7 @@ Screens.Play = {
       <tr><td id="output">output</td><td id="context"></td></tr>\
       <tr><td colspan="2" id="actions"></td></tr>\
       <tr><td colspan="2"><input id="input" type="text" placeholder="input"/></td></tr>\
-      <tr><td colspan="2" id="log"></td></tr>\
+      <tr><td colspan="2"><div id="log"></div></td></tr>\
     </table>\
     <div id="popup"></div>',
 
@@ -148,15 +148,19 @@ Screens.Play = {
       });
       span.addEventListener("click", function(e) {
         App.player.target = App.player.room.getMob(e.target.id);
-        Screens.currentScreen.updateContextWindow();
+        if (Screens.currentScreen.ui.context) {
+          Screens.currentScreen.ui.context.innerHTML = App.player.target.getPopupHTML();
+        }
       });
     }
   },
 
   update: function() {
-    // log:
+    // log messages:
     for (var i=0; i<this.ui.newLogMessages.length; i++) {
-      this.ui.newLogMessages[i].className = "oldLogMessage";
+      var id  = this.ui.newLogMessages[i];
+      var msg = document.getElementById(id);
+      msg.className = "oldLogMessage";
     }
     this.ui.newLogMessages = [];
     // mobs:
@@ -178,12 +182,13 @@ Screens.Play = {
     this.draw();
   },
 
-  sendMessage: function(from, msg) {
-    if (from.room == App.player.room) {
-      var id = Helpers.getUniqueID();
-      this.ui.log.innerHTML += '<span id="'+ id +'" class="newLogMessage">'+ msg + '</span><br>';
-      this.ui.newLogMessages.push(document.getElementById(id));
-    }
+  addLogMessage: function(from, msg) {
+    if (from.room != App.player.room) return;
+    var id   = 'msg' + Helpers.getUniqueID();
+    var html = '<span id="'+ id +'" class="newLogMessage">'+ msg + '</span><br>';
+    this.ui.log.innerHTML += html;
+    this.ui.newLogMessages.push(id);
+    this.ui.log.scrollTop = this.ui.log.scrollHeight;
   },
 
   handleInput: function(code) {
