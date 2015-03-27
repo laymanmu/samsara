@@ -9,7 +9,7 @@ var Mob = function(properties) {
 Mob.prototype = Object.create(Entity.prototype);
 
 Mob.prototype.getPopupHTML = function() {
-  var target = this.target || "none";
+  var target = this.target ? this.target.name : "none";
   var html = Entity.prototype.getPopupHTML.call(this);
   html += '<hr/><table>';
   html += '<tr><td>id:     </td><td>'+ this.id +'</td></tr>';

@@ -1,14 +1,15 @@
 
 var Action = function(properties) {
   Entity.call(this, properties);
-  properties    = properties         || {};
-  this.command  = properties.command || 'rest';
-  this.iconName = properties.icon    || 'Icon.4_18.png';
+  properties        = properties         || {};
+  this.command      = properties.command || 'rest';
+  this.iconName     = properties.icon    || 'Icon.4_18.png';
+  this.coolDownCost = properties.coolDownCost || 2;
+  this.isSustained  = properties.isSustained  || false;
   this.image           = document.createElement('img');
   this.image.id        = this.id;
   this.image.src       = 'assets/'+this.iconName;
   this.image.className = "actionIcon actionReady";
-  this.coolDownCost  = 2;
   this.coolDownValue = 0;
   this.initEvents();
 };
