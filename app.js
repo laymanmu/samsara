@@ -157,7 +157,15 @@ var App = {
 
   look: function() {
     var room = this.player.room;
-    var html = '<span class="roomName">'+room.name+'</span><br>';
+
+    var html;
+
+    // ascii art:
+    //html = Helpers.randElement(AsciiArt.all);
+    html = AsciiArt.hillTrees;
+
+    html += '<br>';
+    html += '<span class="roomName">'+room.name+'</span><br>';
     html += '<span class="roomDesc">'+room.desc+'</span><br>';
 
     // exits:
@@ -200,8 +208,8 @@ var App = {
       this.player.messages = [];
     }
 
+    // add html to document:
     this.print(html);
-
 
     // setup exit popup & click events:
     for (var i=0; i<exitRooms.length; i++) {
@@ -233,6 +241,8 @@ var App = {
         App.player.target = App.player.room.getMob(e.target.id);
         App.updateContextWindow();
       });
+
+
     }
   },
 
