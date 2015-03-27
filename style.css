@@ -10,8 +10,15 @@ html, body {
   text-align: left;
 }
 
-td {
+table, tr, td {
   vertical-align: top;
+  margin: 0;
+  padding: 0;
+}
+
+img, div {
+  margin: 0;
+  padding: 0;
 }
 
 #app {
@@ -29,12 +36,36 @@ td {
   overflow: auto;
 }
 
+#context {
+  background-color: #222;
+  color: #eee;
+  width: 200px;
+  height: 400px;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  overflow: auto;
+}
+
 #actions {
-  background-color: #333;
-  width: 800px;
+  background-color: #222;
+  width: 1000px;
   padding: 0;
   margin: 0;
   text-align: left;
+}
+
+#log {
+  background-color: #222;
+  color: #aaa;
+  width: 1000px;
+  height: 100px;
+  padding: 0;
+  margin: 0;
+  padding-top: 5px;
+  text-align: left;
+  overflow: auto;
+  font-size: 12px;
 }
 
 .actionIcon {
@@ -44,10 +75,9 @@ td {
 
 #input {
   background-color: #cecece;
-  width: 800px;
+  width: 1000px;
   margin: 0;
-  margin-top: 5px;
-  padding: 5px;
+  padding: 0;
   font-family: monospace;
 }
 
@@ -57,17 +87,20 @@ td {
   border: 2px solid #987;
   background-color: #123;
   color: #fff;
-  text-align: center;
+  text-align: left;
   padding: 5px;
   font-size: 12px;
 }
 
 .popupName {
+  text-align: center;
   font-size: 14px;
-  color: #ffcccc;
+  color: #ff0;
 }
 
 .popupDesc {
+  font-style: italic;
+  padding: 5px;
 }
 
 .popupID {

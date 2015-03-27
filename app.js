@@ -7,11 +7,14 @@ var App = {
   actions:    [],
   cmdHistory: {pos:0, partial:null, cmds:[]},
   mouse:      {x:0, y:0},
+  ui:         {},
   player:     null,
 
   init: function() {
-    this.input  = document.getElementById('input');
-    this.output = document.getElementById('output');
+    this.ui.input   = document.getElementById('input');
+    this.ui.output  = document.getElementById('output');
+    this.ui.context = document.getElementById('context');
+    this.ui.log     = document.getElementById('log');
     this.initEvents();
     this.initRooms();
     this.initMobs();
@@ -19,7 +22,7 @@ var App = {
     this.initActions();
     this.clearOutput();
     this.look();
-    this.input.focus();
+    this.ui.input.focus();
   },
 
   initPlayer: function() {
@@ -99,27 +102,27 @@ var App = {
 
   print: function(html) {
     if (this.settings.alwaysClearScreen) {
-      this.output.innerHTML = "";
+      this.ui.output.innerHTML = "";
     } else {
       this.printDivider();
     }
-    this.output.innerHTML += html;
+    this.ui.output.innerHTML += html;
     this.scrollToBottom();
   },
 
   printDivider: function() {
-    if (this.output.innerHTML.length > 0) {
+    if (this.ui.output.innerHTML.length > 0) {
       var html = '<br><span class="divider">~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~</span><br><br>';
-      this.output.innerHTML += html;
+      this.ui.output.innerHTML += html;
     }
   },
 
   scrollToBottom: function() {
-    this.output.scrollTop = this.output.scrollHeight;
+    this.ui.output.scrollTop = this.ui.output.scrollHeight;
   },
 
   clearOutput: function() {
-    this.output.innerHTML = "";
+    this.ui.output.innerHTML = "";
   },
 
   findEntity: function(id, list) {
@@ -142,6 +145,14 @@ var App = {
     var exitName = Helpers.randElement(this.player.room.getExitNames());
     this.sendMessage(this.player, 'you wandered towards the '+ exitName);
     this.runCommand(exitName);
+  },
+
+  updateContextWindow: function() {
+    if (!this.player.target) {
+      this.ui.context.innerHTML = "";
+    } else {
+      this.ui.context.innerHTML = this.player.target.getPopupHTML();
+    }
   },
 
   look: function() {
@@ -200,15 +211,15 @@ var App = {
         var room = App.getRoom(e.target.id);
         Helpers.showPopup(room.getPopupHTML());
       });
-      span.addEventListener("click", function(e) {
-        App.runCommand(e.target.exitName);
-      });
       span.addEventListener("mouseleave", function(e) {
         Helpers.hidePopup();
       });
+      span.addEventListener("click", function(e) {
+        App.runCommand(e.target.exitName);
+      });
     }
 
-    // setup mob popup events:
+    // setup mob popup & click events:
     for (var i=0; i<mobs.length; i++) {
       var span = document.getElementById(mobs[i].id);
       span.addEventListener("mouseenter", function(e) {
@@ -218,13 +229,17 @@ var App = {
       span.addEventListener("mouseleave", function(e) {
         Helpers.hidePopup();
       });
+      span.addEventListener("click", function(e) {
+        App.player.target = App.player.room.getMob(e.target.id);
+        App.updateContextWindow();
+      });
     }
   },
 
   handleInput: function(code) {
     if (code == Keyboard.KEY_Enter) {
-      var command      = this.input.value;
-      this.input.value = "";
+      var command      = this.ui.input.value;
+      this.ui.input.value = "";
       this.runCommand(command);
       this.cmdHistory.cmds.push(command);
       this.cmdHistory.pos     = this.cmdHistory.cmds.length;
@@ -234,12 +249,12 @@ var App = {
       if (this.cmdHistory.cmds.length==0 || this.cmdHistory.pos==0) return;
       // at the newest command? - grab a partial:
       if (this.cmdHistory.pos == this.cmdHistory.cmds.length) {
-        this.cmdHistory.partial = this.input.value;
+        this.cmdHistory.partial = this.ui.input.value;
       }
       // if there are more then move:
       if (this.cmdHistory.pos > 0) {
         this.cmdHistory.pos--;
-        this.input.value = this.cmdHistory.cmds[this.cmdHistory.pos];
+        this.ui.input.value = this.cmdHistory.cmds[this.cmdHistory.pos];
       }
     } else if (code == Keyboard.KEY_DownArrow) {
       // no history? - do nothing:
@@ -248,9 +263,9 @@ var App = {
       if (this.cmdHistory.pos < this.cmdHistory.cmds.length) {
         this.cmdHistory.pos++;
         if (this.cmdHistory.pos == this.cmdHistory.cmds.length) {
-          this.input.value = this.cmdHistory.partial;
+          this.ui.input.value = this.cmdHistory.partial;
         } else {
-          this.input.value = this.cmdHistory.cmds[this.cmdHistory.pos];
+          this.ui.input.value = this.cmdHistory.cmds[this.cmdHistory.pos];
         }
       }
     }
@@ -334,6 +349,10 @@ var App = {
         mob.act();
       }
     }
+    if (this.player.target && this.player.target.room.id != this.player.room.id) {
+      this.player.target = null;
+    }
+    this.updateContextWindow();
     this.look();
   },
 

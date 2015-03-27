@@ -63,9 +63,8 @@ Entity.prototype.wrapDesc = function(charsWide) {
 Entity.prototype.getPopupHTML = function(charsWide) {
   charsWide = charsWide || 50;
   var html = '<table>';
-  html += '<tr><td class="popupName">'+ this.capitalizeName()    +'</td></tr>';
+  html += '<tr><td class="popupName">'+ this.capitalizeName() + '</td></tr>';
   html += '<tr><td class="popupDesc">'+ this.wrapDesc(charsWide) +'</td></tr>';
-  html += '<tr><td class="popupID">id: '+ this.id                +'</td></tr>';
   html += '</table>';
   return html;
 };
