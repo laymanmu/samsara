@@ -14,9 +14,10 @@ RoomRepository.exitPairs.push(['east',  'west']);
 //==================================================================
 
 RoomRepository.define('deer_park_entrance', {
-  group: 'Outdoor',
-  name:  'Deer Park Entrance',
-  desc:  'A gate stands in the middle of a large enclosed park',
+  group:    'Outdoor',
+  name:     'Deer Park Entrance',
+  desc:     'A gate stands in the middle of a large enclosed park',
+  display:  AsciiArt.gate,
   isRandom: false,
   mixins: []
 });
@@ -26,6 +27,7 @@ RoomRepository.define('inside_deer_park', {
   name:  'Inside the Deer Park',
   desc:  'A large enclosed park full of trees and deer',
   isRandom: false,
+  display: AsciiArt.trees,
   mixins: []
 });
 

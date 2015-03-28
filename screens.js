@@ -41,16 +41,20 @@ Screens.Play = {
   ui:         {newLogMessages:[]},
   layout:     '\
     <table id="app">\
-      <tr><td id="output">output</td><td id="context"></td></tr>\
+      <tr>\
+        <td><div id="output"><div id="roomDisplay"></div><div id="roomDetails"></div></div></td>\
+        <td><div id="context"></div></td></tr>\
+      <tr><td colspan="2"><div id="log"></div></td></tr>\
       <tr><td colspan="2" id="actions"></td></tr>\
       <tr><td colspan="2"><input id="input" type="text" placeholder="input"/></td></tr>\
-      <tr><td colspan="2"><div id="log"></div></td></tr>\
     </table>\
     <div id="popup"></div>',
 
   enter: function(properties) {
     Screens.layoutContainer.innerHTML = this.layout;
     this.ui.output  = document.getElementById('output');
+    this.ui.display = document.getElementById('roomDisplay');
+    this.ui.details = document.getElementById('roomDetails');
     this.ui.context = document.getElementById('context');
     this.ui.actions = document.getElementById('actions');
     this.ui.input   = document.getElementById('input');
@@ -69,13 +73,10 @@ Screens.Play = {
 
   draw: function() {
     var room = App.player.room;
-    var html;
+    var html = '';
 
-    // ascii art:
-    //html = Helpers.randElement(AsciiArt.all);
-    html = AsciiArt.hillTrees;
+    this.ui.display.innerHTML = room.display;
 
-    html += '<br>';
     html += '<span class="roomName">'+room.name+'</span><br>';
     html += '<span class="roomDesc">'+room.desc+'</span><br>';
 
@@ -111,7 +112,7 @@ Screens.Play = {
     }
 
     // set ui.output html:
-    this.ui.output.innerHTML = html;
+    this.ui.details.innerHTML = html;
 
     // set ui.context html:
     if (!App.player.target) {

@@ -1,11 +1,12 @@
 
 var Room = function(properties) {
   Entity.call(this, properties);
-  properties = properties || {};
-  this.name  = properties.name  || "forest";
-  this.desc  = properties.desc  || "you are surrounded by trees";
-  this.exits = properties.exits || new KeyStore();
-  this.mobs  = properties.mobs  || [];
+  properties   = properties || {};
+  this.name    = properties.name  || "forest";
+  this.desc    = properties.desc  || "you are surrounded by trees";
+  this.exits   = properties.exits || new KeyStore();
+  this.mobs    = properties.mobs  || [];
+  this.display = properties.display || AsciiArt.hillTrees;
 };
 
 Room.prototype = Object.create(Entity.prototype);
