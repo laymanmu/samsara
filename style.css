@@ -1,6 +1,6 @@
 
 html, body {
-  background-color: #123;
+  background-color: #111;
   font-family: monospace;
   font-size: 16px;
   height: 100%;
@@ -12,13 +12,14 @@ html, body {
 
 td {
   vertical-align: top;
+  margin: 0;
+  padding: 0;
 }
-
 
 #app {
   background-color: #111;
   color: #eee;
-  vertical-align: top;
+  margin: 5px;
 }
 
 #output {
@@ -43,8 +44,8 @@ td {
 }
 
 #context {
-  background-color: #111;
-  color: #eee;
+  background-color: #222;
+  color: #fff;
   width: 200px;
   height: 525px;
   text-align: left;
@@ -66,21 +67,6 @@ td {
   font-size: 12px;
 }
 
-.actionIcon {
-  width: 50px;
-  border: 2px solid black;
-}
-
-.actionReady {
-  border: 2px solid green;
-  opacity: 1.0;
-}
-
-.actionNotReady {
-  border: 2px solid red;
-  opacity: 0.1;
-}
-
 #input {
   background-color: #cecece;
   width: 1000px;
@@ -100,6 +86,21 @@ td {
   font-size: 12px;
 }
 
+.actionIcon {
+  width: 50px;
+  border: 2px solid black;
+}
+
+.actionReady {
+  border: 2px solid green;
+  opacity: 1.0;
+}
+
+.actionNotReady {
+  border: 2px solid red;
+  opacity: 0.1;
+}
+
 .popupName {
   text-align: center;
   font-size: 14px;
@@ -109,10 +110,6 @@ td {
 .popupDesc {
   font-style: italic;
   padding: 5px;
-}
-
-.popupID {
-  color: #888;
 }
 
 .roomName {
@@ -133,35 +130,10 @@ td {
   border-bottom: 1px solid white;
 }
 
-.divider {
-  color: #676767;
-}
-
-.error {
-  color: #ffabab;
-}
-
-.settingsValue {
-  color: #a9a9ff;
-}
-
 .newLogMessage {
   color: #dee;
 }
 
 .oldLogMessage {
   color: #666;
-}
-
-.speechPrefix {
-  color: #bc7abc;
-  font-style: normal;
-}
-
-.speech {
-  color: #000;
-  background-color: #fff;
-  font-style: normal;
-  padding-left: 3px;
-  padding-right: 3px;
 }

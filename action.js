@@ -8,7 +8,7 @@ var Action = function(properties) {
   this.isSustained  = (properties.isSustained!=null  ? properties.isSustained  : false);
   this.image           = document.createElement('img');
   this.image.id        = this.id;
-  this.image.src       = 'assets/'+this.iconName;
+  this.image.src       = 'assets/icons/'+this.iconName;
   this.image.className = "actionIcon actionReady";
   this.coolDownValue = 0;
   this.initEvents();

@@ -3,23 +3,19 @@ var Messages = {};
 
 Messages.Ascetic = [
   "hail the goer, friend",
-  "be heedful or you shall never escape",
+  "abandon craving",
   "abandon conceit",
   "most are not ready for the contemplative life",
-  "move along, there is nothing for you here",
-  "you have nothing that I desire",
   "ha!, they call that a tree",
-  "be ever mindful!",
+  "did you wake up today during an in-breath or an out-breath?",
+  "can you find happiness even with this?",
   "be here now",
   "let go and go forth",
-  "abandon craving",
   "a life gone forth is a life worth living",
   "around and around we go",
   "well met, friend",
-  "don't fetter yourself with evil deeds or evil thoughts",
+  "guard your senses",
   "the sage finds delight in practice",
-  "have you prepared to meet the End-maker?",
-  "what will you take with you when you go?",
-  "what follows behind you like a shadow and never leaves?",
-  "where will you arise again?"
+  "when walking, be walking",
+  "when sitting, be sitting"
 ];

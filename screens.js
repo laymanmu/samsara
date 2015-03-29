@@ -43,7 +43,8 @@ Screens.Play = {
     <table id="app">\
       <tr>\
         <td><div id="output"><div id="roomDisplay"></div><div id="roomDetails"></div></div></td>\
-        <td><div id="context"></div></td></tr>\
+        <td><div id="context"></div></td>\
+      </tr>\
       <tr><td colspan="2"><div id="log"></div></td></tr>\
       <tr><td colspan="2" id="actions"></td></tr>\
       <tr><td colspan="2"><input id="input" type="text" placeholder="input"/></td></tr>\
@@ -150,10 +151,25 @@ Screens.Play = {
       span.addEventListener("click", function(e) {
         App.player.target = App.player.room.getMob(e.target.id);
         if (Screens.currentScreen.ui.context) {
-          Screens.currentScreen.ui.context.innerHTML = App.player.target.getPopupHTML();
+          var tab  = document.getElementById('targetTab');
+          var data = App.player.target.getPopupHTML();
+          Screens.currentScreen.setContextTab(tab, data);
         }
       });
     }
+  },
+
+  setContextTab: function(tab, data) {
+    var tabs = document.getElementsByTagName('tab');
+    for (var i=0; i<tabs.length; i++) {
+      tabs[i].className = "tab";
+    }
+    if (tab) {
+      tab.className = "selectedTab";
+    } else {
+
+    }
+
   },
 
   update: function() {
