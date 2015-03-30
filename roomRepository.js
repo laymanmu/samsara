@@ -14,7 +14,7 @@ RoomRepository.exitPairs.push(['east',  'west']);
 //==================================================================
 
 RoomRepository.define('deer_park_entrance', {
-  group:    'Outdoor',
+  group:    'DeerPark',
   name:     'Deer Park Entrance',
   desc:     'A gate stands in the middle of a large enclosed park',
   display:  '<img src="assets/images/forest_gate.png"/><br>',
@@ -23,19 +23,27 @@ RoomRepository.define('deer_park_entrance', {
 });
 
 RoomRepository.define('inside_deer_park', {
-  group: 'Outdoor',
-  name:  'Inside the Deer Park',
-  desc:  'A large enclosed park full of trees and deer',
+  group:    'DeerPark',
+  name:     'Inside the Deer Park',
+  desc:     'A large enclosed park full of trees and deer',
   display:  '<img src="assets/images/deer_park.png"/><br>',
   isRandom: false,
   mixins: []
 });
 
+RoomRepository.define('two_sadhus', {
+  group:    'DeerPark',
+  name:     'Two Sadhus',
+  desc:     'Two sadhus sit here and discuss the nature of life',
+  display:  '<img src="assets/images/two_sadhus.jpg"/><br>',
+  isRandom: false,
+  mixins: []
+});
 
 RoomRepository.define('deer_park_wall', {
-  group: 'Outdoor',
-  name:  'Stone Wall',
-  desc:  'A long brick wall that appears to enclose a park',
+  group:    'DeerPark',
+  name:     'Stone Wall',
+  desc:     'A long brick wall that appears to enclose a park',
   display:  '<img src="assets/images/stone_wall.png"/><br>',
   isRandom: false,
   mixins: []

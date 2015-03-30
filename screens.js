@@ -21,7 +21,7 @@ var Screens = {
     }
     this.currentScreen = screen;
     this.currentScreen.enter(properties);
-    this.currentScreen.update();
+    this.refresh();
   },
 
   sendMessage: function(from, msg) {
@@ -37,8 +37,9 @@ var Screens = {
 //==================================================================
 
 Screens.Play = {
-  cmdHistory: {pos:0, partial:null, cmds:[]},
-  ui:         {newLogMessages:[]},
+  childScreen:  null,
+  cmdHistory:  {pos:0, partial:null, cmds:[]},
+  ui:          {newLogMessages:[]},
   layout:     '\
     <table id="app">\
       <tr>\
@@ -57,22 +58,33 @@ Screens.Play = {
     this.ui.display = document.getElementById('roomDisplay');
     this.ui.details = document.getElementById('roomDetails');
     this.ui.context = document.getElementById('context');
-    this.ui.actions = document.getElementById('actions');
     this.ui.input   = document.getElementById('input');
     this.ui.log     = document.getElementById('log');
     this.ui.popup   = document.getElementById('popup');
-    this.ui.input.focus();
+    this.ui.actions = document.getElementById('actions');
+    this.ui.actions.innerHTML = "";
     for (var i=0; i<App.player.actions.length; i++) {
       this.ui.actions.appendChild(App.player.actions[i].image);
     }
-    this.draw();
+    if (this.savedLog) {
+      this.ui.log.innerHTML = this.savedLog;
+      this.savedLog = null;
+    }
+    this.ui.input.focus();
   },
 
   exit: function() {
+    this.savedLog    = this.ui.log.innerHTML;
+    this.childScreen = null;
     Screens.layoutContainer.innerHTML = "";
   },
 
   draw: function() {
+    if (this.childScreen) {
+      this.childScreen.draw();
+      return;
+    }
+
     var room = App.player.room;
     var html = '';
 
@@ -149,11 +161,14 @@ Screens.Play = {
         Helpers.hidePopup();
       });
       span.addEventListener("click", function(e) {
+        if (App.player.target) {
+          document.getElementById(App.player.target.id).className = "roomMob";
+        }
         App.player.target = App.player.room.getMob(e.target.id);
+        document.getElementById(App.player.target.id).className = "roomMob targeted";
         if (Screens.currentScreen.ui.context) {
-          var tab  = document.getElementById('targetTab');
-          var data = App.player.target.getPopupHTML();
-          Screens.currentScreen.setContextTab(tab, data);
+          var html = App.player.target.getPopupHTML();
+          Screens.currentScreen.ui.context.innerHTML = html;
         }
       });
     }
@@ -173,6 +188,11 @@ Screens.Play = {
   },
 
   update: function() {
+    if (this.childScreen) {
+      this.childScreen.update();
+      return;
+    }
+
     // log messages:
     for (var i=0; i<this.ui.newLogMessages.length; i++) {
       var id  = this.ui.newLogMessages[i];
@@ -199,6 +219,13 @@ Screens.Play = {
     this.draw();
   },
 
+  setChildScreen: function(screen, properties) {
+    properties = properties || {};
+    this.childScreen        = screen;
+    properties.parentScreen = this;
+    screen.enter(properties);
+  },
+
   addLogMessage: function(from, msg) {
     if (from.room != App.player.room) return;
     var id   = 'msg' + Helpers.getUniqueID();
@@ -209,6 +236,11 @@ Screens.Play = {
   },
 
   handleInput: function(code) {
+    if (this.childScreen) {
+      this.childScreen.handleInput(code);
+      return;
+    }
+
     if (code == Keyboard.KEY_Enter) {
       var command = this.ui.input.value;
       this.ui.input.value = "";
@@ -249,7 +281,7 @@ Screens.Play = {
 //==================================================================
 
 Screens.Start = {
-  layout: '<div><span id="app">press Enter to start</span></div>',
+  layout: '<div id="app">press Enter to start</div>',
   enter: function(properties) {
     Screens.layoutContainer.innerHTML = this.layout;
   },
@@ -264,4 +296,60 @@ Screens.Start = {
       Screens.switchScreen(Screens.Play);
     }
   }
+};
+
+//==================================================================
+// DhammaTalk:
+//==================================================================
+
+Screens.DhammaTalk = {
+  ui:     {},
+  layout: '<div id="app"><div id="dhammaTitle"></div><div id="dhammaText"></div></div>',
+
+  enter: function(properties) {
+    properties = properties || {};
+    Screens.layoutContainer.innerHTML = this.layout;
+    this.ui.dhammaTitle = document.getElementById('dhammaTitle');
+    this.ui.dhammaText  = document.getElementById('dhammaText');
+    this.dhammaTitle    = properties.dhamma || 'The Core Teaching';
+    this.dhammaText     = properties.dhamma || ["Don't do harm"];
+    this.parentScreen   = properties.parentScreen;
+    this.dhammaIndex    = -1;
+    this.ui.dhammaTitle.innerHTML = this.dhammaTitle;
+  },
+
+  exit: function() {
+    var nextScreen = Screens.start;
+    if (this.parentScreen) {
+      nextScreen             = this.parentScreen;
+      this.parentScreen      = null;
+      nextScreen.childScreen = null;
+    }
+    Screens.switchScreen(nextScreen);
+  },
+
+  update: function() {
+    this.dhammaIndex++;
+    if (this.dhammaIndex > this.dhammaText.length) {
+      this.exit();
+    }
+  },
+
+  draw: function() {
+    this.ui.dhammaTitle.innerHTML = this.dhammaTitle;
+    if (this.dhammaIndex == this.dhammaText.length) {
+      this.ui.dhammaText.innerHTML += '<br>-= The End =-<br>';
+    } else {
+      this.ui.dhammaText.innerHTML += this.dhammaText[this.dhammaIndex] + '<br>';
+    }
+  },
+
+  handleInput: function(code) {
+    if (code == Keyboard.KEY_Escape) {
+      this.exit();
+    } else {
+      Screens.refresh();
+    }
+  }
+
 };

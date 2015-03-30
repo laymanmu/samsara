@@ -53,24 +53,32 @@ var App = {
   },
 
   initRooms: function() {
-    var parkWall1 = RoomRepository.create('deer_park_wall');
+    var parkWall  = RoomRepository.create('deer_park_wall');
     var parkGate  = RoomRepository.create('deer_park_entrance');
     var deerPark  = RoomRepository.create('inside_deer_park');
-    var parkWall2 = RoomRepository.create('deer_park_wall');
+    var twoSadhus = RoomRepository.create('two_sadhus');
+
+    twoSadhus.exits.add('grass', deerPark);
+    deerPark.exits.add('grass', twoSadhus);
 
     deerPark.exits.add('gate', parkGate);
     parkGate.exits.add('gate', deerPark);
-    parkGate.exits.add('northeast', parkWall1);
-    parkWall1.exits.add('southwest', parkGate);
-    parkGate.exits.add('southwest', parkWall2);
-    parkWall2.exits.add('northeast', parkGate);
 
+    parkGate.exits.add('path', parkWall);
+    parkWall.exits.add('path', parkGate);
+
+    this.rooms.push(parkWall);
     this.rooms.push(parkGate);
     this.rooms.push(deerPark);
-    this.rooms.push(parkWall1);
-    this.rooms.push(parkWall2);
+    this.rooms.push(twoSadhus);
 
-    var lastRoom = parkWall2;
+    // TODO: add init to rooms to create mobs
+    for (var i=0; i<2; i++) {
+      twoSadhus.addMob(MobRepository.create('sadhu'));
+    }
+
+
+    var lastRoom = parkWall;
     for (var i=0; i<100; i++) {
       var nextRoom = RoomRepository.createRandom();
       var exitPair = Helpers.randElement(RoomRepository.exitPairs);
@@ -82,7 +90,7 @@ var App = {
   },
 
   initMobs: function() {
-    for (var i=0; i<Helpers.randInt(3,10); i++) {
+    for (var i=0; i<Helpers.randInt(30,100); i++) {
       var mob  = MobRepository.createRandom();
       var room = this.rooms[Helpers.randInt(0,this.rooms.length-1)];
       room.addMob(mob);
@@ -138,17 +146,11 @@ var App = {
       var html = '<span class="help">Commands: '+ builtins.sort().join(', ') +'</span><br>';
       this.print(html);
       return null;
-    } else if (cmd == "settings") {
-      var html = 'Settings:<br><br>';
-      for (var key in this.settings) {
-        if (this.settings.hasOwnProperty(key)) {
-          html += key +': <span class="settingsValue">'+ this.settings[key] +'</span><br>';
-        }
-      }
-      this.print(html);
-      return null;
     } else if (cmd == "wander") {
       this.wander();
+      return null;
+    } else if (cmd == "dhamma") {
+      Screens.currentScreen.setChildScreen(Screens.DhammaTalk);
       return null;
     }
 
@@ -180,6 +182,7 @@ var App = {
     } else {
       console.log("ERROR: runCommand() unknown command: "+ cmd);
     }
-  },
+  }
+
 
 };

@@ -43,3 +43,10 @@ MobRepository.define('ascetic', {
   isRandom: true,
   mixins: [ Mixins.Acting.Sitter ]
 });
+
+MobRepository.define('sadhu', {
+  name: 'sadhu',
+  desc: 'this one has gone forth into homelessness in order to discover the secrets of the universe',
+  isRandom: true,
+  mixins: [ Mixins.Acting.Sitter ]
+});
