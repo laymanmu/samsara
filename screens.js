@@ -304,18 +304,25 @@ Screens.Start = {
 
 Screens.DhammaTalk = {
   ui:     {},
-  layout: '<div id="app"><div id="dhammaTitle"></div><div id="dhammaText"></div></div>',
+  layout: '<div id="app">\
+      <div id="dhammaTitle"></div>\
+      <div id="dhammaSubTitle"></div>\
+      <div id="dhammaText"></div>\
+    </div>',
 
   enter: function(properties) {
     properties = properties || {};
     Screens.layoutContainer.innerHTML = this.layout;
-    this.ui.dhammaTitle = document.getElementById('dhammaTitle');
-    this.ui.dhammaText  = document.getElementById('dhammaText');
-    this.dhammaTitle    = properties.dhamma || 'The Core Teaching';
-    this.dhammaText     = properties.dhamma || ["Don't do harm"];
-    this.parentScreen   = properties.parentScreen;
-    this.dhammaIndex    = -1;
-    this.ui.dhammaTitle.innerHTML = this.dhammaTitle;
+    this.ui.dhammaTitle    = document.getElementById('dhammaTitle');
+    this.ui.dhammaSubTitle = document.getElementById('dhammaSubTitle');
+    this.ui.dhammaText     = document.getElementById('dhammaText');
+    this.dhammaTitle       = properties.title    || 'The Core Teaching';
+    this.dhammaSubTitle    = properties.subtitle || 'The Core Teaching';
+    this.dhammaText        = properties.text     || ["Don't do harm"];
+    this.parentScreen      = properties.parentScreen;
+    this.dhammaIndex       = -1;
+    this.ui.dhammaTitle.innerHTML    = this.dhammaTitle;
+    this.ui.dhammaSubTitle.innerHTML = this.dhammaSubTitle;
   },
 
   exit: function() {
@@ -336,7 +343,8 @@ Screens.DhammaTalk = {
   },
 
   draw: function() {
-    this.ui.dhammaTitle.innerHTML = this.dhammaTitle;
+    this.ui.dhammaTitle.innerHTML    = this.dhammaTitle;
+    this.ui.dhammaSubTitle.innerHTML = this.dhammaSubTitle;
     if (this.dhammaIndex == this.dhammaText.length) {
       this.ui.dhammaText.innerHTML += '<br>-= The End =-<br>';
     } else {

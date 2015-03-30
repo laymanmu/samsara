@@ -150,7 +150,9 @@ var App = {
       this.wander();
       return null;
     } else if (cmd == "dhamma") {
-      Screens.currentScreen.setChildScreen(Screens.DhammaTalk);
+      var talk  = DhammaTalks.random();
+      var props = {title:talk.title, subTitle:talk.subTitle, text:talk.text};
+      Screens.currentScreen.setChildScreen(Screens.DhammaTalk, props);
       return null;
     }
 
