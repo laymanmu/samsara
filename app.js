@@ -79,7 +79,7 @@ var App = {
 
     var lastRoom = parkWall;
 
-    // TODO: var roomIndices = Helpers.getRandomIndices(RoomRepository.randomTemplateNames);
+    Helpers.shuffle(RoomRepository.randomTemplateNames);
     for (var i=0; i<RoomRepository.randomTemplateNames.length; i++) {
       var nextRoom = RoomRepository.create(RoomRepository.randomTemplateNames[i]);
       var exitPair = Helpers.randElement(RoomRepository.exitPairs);
