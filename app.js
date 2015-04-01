@@ -77,10 +77,11 @@ var App = {
       twoSadhus.addMob(MobRepository.create('sadhu'));
     }
 
-
     var lastRoom = parkWall;
-    for (var i=0; i<100; i++) {
-      var nextRoom = RoomRepository.createRandom();
+
+    // TODO: var roomIndices = Helpers.getRandomIndices(RoomRepository.randomTemplateNames);
+    for (var i=0; i<RoomRepository.randomTemplateNames.length; i++) {
+      var nextRoom = RoomRepository.create(RoomRepository.randomTemplateNames[i]);
       var exitPair = Helpers.randElement(RoomRepository.exitPairs);
       lastRoom.exits.add(exitPair[0], nextRoom);
       nextRoom.exits.add(exitPair[1], lastRoom);

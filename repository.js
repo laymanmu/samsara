@@ -4,12 +4,14 @@ var Repository = function(repoName, instanceConstructor) {
   this.constructor     = instanceConstructor;
   this.templates       = {};
   this.randomTemplates = [];
+  this.randomTemplateNames = [];
 };
 
 Repository.prototype.define = function(name, template) {
   this.templates[name] = template;
   if (template.isRandom) {
     this.randomTemplates.push(template);
+    this.randomTemplateNames.push(name);
   }
 };
 
@@ -31,3 +33,4 @@ Repository.prototype.createRandom = function() {
   var template = this.randomTemplates[index];
   return new this.constructor(template);
 };
+
