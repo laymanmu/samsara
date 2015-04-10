@@ -56,15 +56,11 @@ Entity.prototype.capitalizeName = function() {
   return first + other;
 };
 
-Entity.prototype.wrapDesc = function(charsWide) {
-  return Helpers.wrap(this.desc, charsWide, '<br>', false);
-};
-
 Entity.prototype.getPopupHTML = function(charsWide) {
   charsWide = charsWide || 50;
   var html = '<table>';
   html += '<tr><td class="popupName">'+ this.capitalizeName() + '</td></tr>';
-  html += '<tr><td class="popupDesc">'+ this.wrapDesc(charsWide) +'</td></tr>';
+  html += '<tr><td class="popupDesc">'+ this.desc +'</td></tr>';
   html += '</table>';
   return html;
 };
