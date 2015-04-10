@@ -118,14 +118,18 @@ Screens.Play = {
     // mobs:
     var mobs = [];
     for (var i=0; i<room.mobs.length; i++) {
-      if (room.mobs[i] != this.player) {
+      if (room.mobs[i] != App.player) {
         mobs.push(room.mobs[i]);
       }
     }
     if (mobs.length > 0) {
       html += 'Mobs: ';
       for (var i=0; i<mobs.length; i++) {
-        html += '<span class="roomMob" id="'+ mobs[i].id +'">'+ mobs[i].name +'</span>';
+        var klass = "roomMob";
+        if (mobs[i] == App.player.target) {
+          klass += ' targeted';
+        }
+        html += '<span class="'+klass+'" id="'+mobs[i].id+'">'+mobs[i].name+'</span>';
         if (i<mobs.length-1)  html += ', ';
       }
       html += '<br>';
@@ -168,13 +172,22 @@ Screens.Play = {
         Helpers.hidePopup();
       });
       span.addEventListener("click", function(e) {
-        if (App.player.target) {
+        if (App.player.target && e.target.id == App.player.target.id) {
+          // if clicked on target:
           document.getElementById(App.player.target.id).className = "roomMob";
+          App.player.target = null;
+        } else if (App.player.target) {
+          // if clicked on one while has other target:
+          document.getElementById(App.player.target.id).className = "roomMob";
+          App.player.target = App.player.room.getMob(e.target.id);
+          document.getElementById(App.player.target.id).className = "roomMob targeted";
+        } else {
+          // if clicked on one while has no target:
+          App.player.target = App.player.room.getMob(e.target.id);
+          document.getElementById(App.player.target.id).className = "roomMob targeted";
         }
-        App.player.target = App.player.room.getMob(e.target.id);
-        document.getElementById(App.player.target.id).className = "roomMob targeted";
         if (Screens.currentScreen.ui.context) {
-          var html = App.player.target.getPopupHTML();
+          var html = App.player.target ? App.player.target.getPopupHTML() : "";
           Screens.currentScreen.ui.context.innerHTML = html;
         }
       });
@@ -213,6 +226,7 @@ Screens.Play = {
       }
     }
     this.ui.newLogMessageIDs = keepNew;
+
     // mobs:
     for (var i=0; i<App.mobs.length; i++) {
       var mob = App.mobs[i];
