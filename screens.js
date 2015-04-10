@@ -28,6 +28,12 @@ var Screens = {
     if (this.currentScreen == Screens.Play) {
       this.currentScreen.addLogMessage(from, msg);
     }
+  },
+
+  print: function(msg) {
+    if (this.currentScreen) {
+      this.currentScreen.print(msg);
+    }
   }
 
 };
@@ -235,6 +241,10 @@ Screens.Play = {
     this.ui.log.scrollTop = this.ui.log.scrollHeight;
   },
 
+  print: function(msg) {
+    this.addLogMessage(App.player, msg);
+  },
+
   handleInput: function(code) {
     if (this.childScreen) {
       this.childScreen.handleInput(code);
@@ -290,6 +300,9 @@ Screens.Start = {
   update: function() {
   },
   draw: function() {
+  },
+  print: function(msg) {
+    document.body.innerHTML += msg;
   },
   handleInput: function(code) {
     if (code == Keyboard.KEY_Enter) {
@@ -352,6 +365,10 @@ Screens.DhammaTalk = {
     }
   },
 
+  print: function(msg) {
+    document.body.innerHTML += msg;
+  },
+  
   handleInput: function(code) {
     if (code == Keyboard.KEY_Escape) {
       this.exit();

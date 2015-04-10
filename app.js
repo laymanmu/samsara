@@ -119,20 +119,10 @@ var App = {
 
     var tookTurn  = false;
     var cmdLength = cmd.length;
-    var builtins  = ["look", "rest", "clear", "help" ];
 
     // built-in commands:
-    if (cmd == "look" || cmd == "rest") {
-      tookTurn = true;
-    } else if (cmd == "clear") {
-      this.clearOutput();
-      return null;
-    } else if (cmd == "help") {
-      var html = '<span class="help">Commands: '+ builtins.sort().join(', ') +'</span><br>';
-      this.print(html);
-      return null;
-    } else if (cmd == "wander") {
-      this.wander();
+    if (ActionCommands.hasOwnProperty(cmd)) {
+      ActionCommands[cmd]();
       return null;
     } else if (cmd == "dhamma") {
       var talk  = DhammaTalks.random();

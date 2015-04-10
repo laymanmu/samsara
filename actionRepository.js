@@ -17,7 +17,7 @@ ActionRepository.define('look', {
 
 ActionRepository.define('offerRespect', {
   name:    'Offer Respect',
-  command: 'rest',
+  command: 'offerRespect',
   icon:    'Icon.7_06.png',
   desc:    'Offer respect to your target',
   coolDownCost: 1,

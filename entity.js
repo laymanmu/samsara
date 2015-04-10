@@ -68,3 +68,13 @@ Entity.prototype.getPopupHTML = function(charsWide) {
   html += '</table>';
   return html;
 };
+
+Entity.prototype.onRespectOffered = function(fromEntity) {
+  var msg = this.nameThe() + " smiles at you";
+  Screens.print(msg);
+};
+
+Entity.prototype.onLookedAt = function(fromEntity) {
+  var msg = this.nameThe() + " looks back at you and smiles";
+  Screens.print(msg);
+};
