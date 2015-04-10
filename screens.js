@@ -135,6 +135,16 @@ Screens.Play = {
       html += '</div>';
     }
 
+    // items:
+    if (room.items.length > 0) {
+      html += '<div class="entityList">Items: ';
+      for (var i=0; i<room.items.length; i++) {
+        html += '<span class="roomItem" id="'+ room.items[i].id +'">'+ room.items[i].name+'</span>';
+        if (i<room.items.length-1) html += ', ';
+      }
+      html += '</div>';
+    }
+
     // set ui.output html:
     this.ui.details.innerHTML = html;
 

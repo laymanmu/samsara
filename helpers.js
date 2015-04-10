@@ -1,10 +1,9 @@
 
 var Helpers = {
 
-  _nextID: 1,
-
-  getUniqueID: function() {
-    return '_' + this._nextID++;
+  getUniqueID: function(prefix) {
+    if (!this._nextID) this._nextID = 1;
+    return prefix +'_'+ this._nextID++;
   },
 
   randInt: function(min, max) {

@@ -17,8 +17,9 @@ var App = {
   initPlayer: function() {
     this.player = new Mob({name:"player", desc:"a human"});
     this.rooms[0].addMob(this.player);
-    this.player.messages = [];
-    this.player.actions  = [];
+    this.player.messages  = [];
+    this.player.actions   = [];
+    this.player.container = new Crafting.Container({name:"bag",slots:20});
 
     this.player.actions.push(ActionRepository.create('look'));
     this.player.actions.push(ActionRepository.create('offerRespect'));

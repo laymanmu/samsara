@@ -6,6 +6,7 @@ var Room = function(properties) {
   this.desc    = properties.desc  || "you are surrounded by trees";
   this.exits   = properties.exits || new KeyStore();
   this.mobs    = properties.mobs  || [];
+  this.items   = properties.items || [];
   this.display = properties.display || AsciiArt.hillTrees;
 };
 
