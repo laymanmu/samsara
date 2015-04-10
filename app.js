@@ -21,23 +21,7 @@ var App = {
     this.player.actions  = [];
 
     this.player.actions.push(ActionRepository.create('look'));
-    this.player.actions.push(ActionRepository.create('wander'));
-    this.player.actions.push(ActionRepository.create('respect'));
-    var numRandomActions = 3;
-    while (numRandomActions > 0) {
-      var action = ActionRepository.createRandom();
-      var exists = false;
-      for (var i=0; i<this.player.actions.length; i++) {
-        if (this.player.actions[i].name == action.name) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) {
-        this.player.actions.push(action);
-        numRandomActions--;
-      }
-    }
+    this.player.actions.push(ActionRepository.create('offerRespect'));
   },
 
   initEvents: function() {
