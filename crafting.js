@@ -9,9 +9,12 @@ var Crafting = {};
 Crafting.Item = function(parms) {
   this.id          = Helpers.getUniqueID('item');
   this.name        = parms.name;
+  this.desc        = parms.desc;
   this.isTool      = parms.isTool;
   this.numPerStack = parms.numPerStack;
 };
+
+Crafting.Item.prototype = Object.create(Entity.prototype);
 
 /** Recipe:
 * parms.name       = string: name of recipe
@@ -21,9 +24,12 @@ Crafting.Item = function(parms) {
 Crafting.Recipe = function(parms) {
   this.id         = Helpers.getUniqueID('recipe');
   this.name       = parms.name;
+  this.desc        = parms.desc;
   this.resultName = parms.resultName;
   this.items      = parms.items;
 };
+
+Crafting.Recipe.prototype = Object.create(Entity.prototype);
 
 Crafting.Recipe.prototype.numNeeded = function(itemName) {
   return this.items[itemName] ? this.items[itemName] : 0;
@@ -36,9 +42,12 @@ Crafting.Recipe.prototype.numNeeded = function(itemName) {
 Crafting.Container = function(parms) {
   this.id     = Helpers.getUniqueID('container');
   this.name   = parms.name;
+  this.desc        = parms.desc;
   this.slots  = parms.slots;
   this.items  = {}; //<- key: itemName, val: [item,...]
 };
+
+Crafting.Container.prototype = Object.create(Entity.prototype);
 
 Crafting.Container.prototype.getNextItemNamed = function(itemName) {
   return this.items[itemName] ? this.items[itemName][0] : null;

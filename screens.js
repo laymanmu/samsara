@@ -202,6 +202,18 @@ Screens.Play = {
         }
       });
     }
+
+    // setup item events:
+    for (var i=0; i<room.items.length; i++) {
+      var span = document.getElementById(room.items[i].id);
+      span.addEventListener("mouseenter", function(e) {
+        var item = App.player.room.getItem(e.target.id);
+        Helpers.showPopup(item.getPopupHTML());
+      });
+      span.addEventListener("mouseleave", function(e) {
+        Helpers.hidePopup();
+      });
+    }
   },
 
   setContextTab: function(tab, data) {

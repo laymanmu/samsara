@@ -1,15 +1,17 @@
 
 var App = {
 
-  rooms:      [],
-  mobs:       [],
-  mouse:      {clientX:0, clientY:0, pageX:0, pageY:0},
-  player:     null,
+  rooms:  [],
+  mobs:   [],
+  items:  [],
+  player: null,
+  mouse:  {clientX:0, clientY:0, pageX:0, pageY:0},
 
   init: function() {
     this.initEvents();
     this.initRooms();
     this.initMobs();
+    this.initItems();
     this.initPlayer();
     Screens.init();
   },
@@ -79,15 +81,27 @@ var App = {
   },
 
   initMobs: function() {
-    for (var i=0; i<Helpers.randInt(30,100); i++) {
+    var numMobs = Helpers.randInt(30,100);
+    for (var i=0; i<numMobs; i++) {
       var mob  = MobRepository.createRandom();
       var room = this.rooms[Helpers.randInt(0,this.rooms.length-1)];
       room.addMob(mob);
       this.mobs.push(mob);
     }
+    // add an ascetic to the starting room:
     var ascetic = MobRepository.create('ascetic');
     this.rooms[0].addMob(ascetic);
     this.mobs.push(ascetic);
+  },
+
+  initItems: function() {
+    var numItems = Helpers.randInt(30, 100);
+    for (var i=0; i<numItems; i++) {
+      var item = ItemRepository.createRandom();
+      var room = this.rooms[Helpers.randInt(0, this.rooms.length-1)];
+      room.addItem(item);
+      this.items.push(item);
+    }
   },
 
   findEntity: function(id, list) {

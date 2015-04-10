@@ -159,6 +159,11 @@ td {
   background-color: white;
 }
 
+.roomItem {
+  color: #c8c8de;
+  border-bottom: 1px solid #c8c8de;
+}
+
 .newLogMessage {
   color: #dee;
 }

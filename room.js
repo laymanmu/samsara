@@ -24,6 +24,25 @@ Room.prototype.removeMob = function(mob) {
   }
 };
 
+Room.prototype.addItem = function(item) {
+  this.items.push(item);
+};
+
+Room.prototype.removeItem = function(item) {
+  var index = this.items.indexOf(item);
+  if (index != -1) {
+    this.items.splice(index,1);
+  }
+};
+
+Room.prototype.getItem = function(id) {
+  for (var i=0; i<this.items.length; i++) {
+    if (this.items[i].id == id) {
+      return this.items[i];
+    }
+  }
+};
+
 Room.prototype.moveMob = function(mob, exitName) {
   var newRoom = this.getNextRoom(exitName);
   if (!newRoom) return;
