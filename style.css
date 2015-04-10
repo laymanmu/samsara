@@ -139,6 +139,10 @@ td {
   color: #ababff;
 }
 
+.entityList {
+  padding: 3px;
+}
+
 .roomExit {
   color: #abffab;
   border-bottom: 1px solid #abffab;
@@ -150,7 +154,9 @@ td {
 }
 
 .roomMob.targeted {
-  border: 1px solid gold;
+  border: 1px solid red;
+  color: black;
+  background-color: white;
 }
 
 .newLogMessage {

@@ -104,7 +104,7 @@ Screens.Play = {
     var exitNames = room.getExitNames();
     var exitRooms = [];
     if (exitNames.length > 0) {
-      html += 'Exits: ';
+      html += '<div class="entityList">Exits: ';
       for (var i=0; i<exitNames.length; i++) {
         var name = exitNames[i];
         var exit = room.getNextRoom(name);
@@ -112,7 +112,7 @@ Screens.Play = {
         html += '<span class="roomExit" id="'+exit.id+'">'+name+'</span>';
         if (i<exitNames.length-1) html += ', ';
       }
-      html += '<br>';
+      html += '</div>';
     }
 
     // mobs:
@@ -123,7 +123,7 @@ Screens.Play = {
       }
     }
     if (mobs.length > 0) {
-      html += 'Mobs: ';
+      html += '<div class="entityList">Beings: ';
       for (var i=0; i<mobs.length; i++) {
         var klass = "roomMob";
         if (mobs[i] == App.player.target) {
@@ -132,7 +132,7 @@ Screens.Play = {
         html += '<span class="'+klass+'" id="'+mobs[i].id+'">'+mobs[i].name+'</span>';
         if (i<mobs.length-1)  html += ', ';
       }
-      html += '<br>';
+      html += '</div>';
     }
 
     // set ui.output html:
