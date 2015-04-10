@@ -3,7 +3,7 @@ var App = {
 
   rooms:      [],
   mobs:       [],
-  mouse:      {x:0, y:0},
+  mouse:      {clientX:0, clientY:0, pageX:0, pageY:0},
   player:     null,
 
   init: function() {
@@ -32,8 +32,10 @@ var App = {
       App.handleInput(code);
     };
     document.onmousemove = function(e) {
-      App.mouse.x = e.pageX;
-      App.mouse.y = e.pageY;
+      App.mouse.clientX = e.clientX;
+      App.mouse.clientY = e.clientY;
+      App.mouse.pageX = e.pageX;
+      App.mouse.pageY = e.pageY;
     };
   },
 

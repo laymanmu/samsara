@@ -32,13 +32,26 @@ var Helpers = {
   },
 
   showPopup: function(html) {
-    var posX = App.mouse.x + 100 + "px";
-    var posY = App.mouse.y + "px";
+    var posX = App.mouse.clientX + 100;
+    var posY = App.mouse.clientY;
     var div  = document.getElementById('popup');
+
     div.innerHTML     = html;
-    div.style.left    = posX;
-    div.style.top     = posY;
     div.style.display = 'block';
+    var popupHeight   = div.offsetHeight;
+    var screenHeight  = document.body.clientHeight;
+    var bottom        = posY + popupHeight;
+    var diff          = bottom - screenHeight;
+
+    if (diff > 0) {
+      var margin = 30;
+      posY = App.mouse.pageY - (diff+margin);
+    } else {
+      posY = App.mouse.pageY;
+    }
+
+    div.style.left = posX +"px";
+    div.style.top  = posY +"px";
   },
 
   hidePopup: function() {
