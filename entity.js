@@ -71,10 +71,10 @@ Entity.prototype.getPopupHTML = function(charsWide) {
 
 Entity.prototype.onRespectOffered = function(fromEntity) {
   var msg = this.nameThe() + " smiles at you";
-  Screens.print(msg);
+  Screens.print(msg, true);
 };
 
 Entity.prototype.onLookedAt = function(fromEntity) {
   var msg = this.nameThe() + " looks back at you and smiles";
-  Screens.print(msg);
+  Screens.print(msg, true);
 };

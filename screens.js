@@ -24,15 +24,16 @@ var Screens = {
     this.refresh();
   },
 
-  sendMessage: function(from, msg) {
+  sendMessage: function(from, msg, keepNew) {
     if (this.currentScreen == Screens.Play) {
-      this.currentScreen.addLogMessage(from, msg);
+      this.currentScreen.addLogMessage(from, msg, keepNew);
     }
   },
 
-  print: function(msg) {
+  print: function(msg, keepNew) {
+    keepNew = keepNew || false;
     if (this.currentScreen) {
-      this.currentScreen.print(msg);
+      this.currentScreen.print(msg, keepNew);
     }
   }
 
@@ -45,7 +46,7 @@ var Screens = {
 Screens.Play = {
   childScreen:  null,
   cmdHistory:  {pos:0, partial:null, cmds:[]},
-  ui:          {newLogMessages:[]},
+  ui:          {newLogMessageIDs:[]},
   layout:     '\
     <table id="app">\
       <tr>\
@@ -200,12 +201,18 @@ Screens.Play = {
     }
 
     // log messages:
-    for (var i=0; i<this.ui.newLogMessages.length; i++) {
-      var id  = this.ui.newLogMessages[i];
+    var keepNew = [];
+    for (var i=0; i<this.ui.newLogMessageIDs.length; i++) {
+      var id  = this.ui.newLogMessageIDs[i];
       var msg = document.getElementById(id);
-      msg.className = "oldLogMessage";
+      if (msg.className.indexOf('keepNew') > -1) {
+        msg.className = "newLogMessage";
+        keepNew.push(id);
+      } else {
+        msg.className = "oldLogMessage";
+      }
     }
-    this.ui.newLogMessages = [];
+    this.ui.newLogMessageIDs = keepNew;
     // mobs:
     for (var i=0; i<App.mobs.length; i++) {
       var mob = App.mobs[i];
@@ -232,17 +239,18 @@ Screens.Play = {
     screen.enter(properties);
   },
 
-  addLogMessage: function(from, msg) {
+  addLogMessage: function(from, msg, keepNew) {
     if (from.room != App.player.room) return;
-    var id   = 'msg' + Helpers.getUniqueID();
-    var html = '<span id="'+ id +'" class="newLogMessage">'+ msg + '</span><br>';
-    this.ui.log.innerHTML += html;
-    this.ui.newLogMessages.push(id);
-    this.ui.log.scrollTop = this.ui.log.scrollHeight;
+    this.print(msg, keepNew);
   },
 
-  print: function(msg) {
-    this.addLogMessage(App.player, msg);
+  print: function(msg, keepNew) {
+    var id   = 'msg' + Helpers.getUniqueID();
+    var klass = keepNew ? 'newLogMessage keepNew' : 'newLogMessage';
+    var html = '<span id="'+ id +'" class="'+ klass +'">'+ msg +'</span><br>';
+    this.ui.log.innerHTML += html;
+    this.ui.newLogMessageIDs.push(id);
+    this.ui.log.scrollTop = this.ui.log.scrollHeight;
   },
 
   handleInput: function(code) {
@@ -368,7 +376,7 @@ Screens.DhammaTalk = {
   print: function(msg) {
     document.body.innerHTML += msg;
   },
-  
+
   handleInput: function(code) {
     if (code == Keyboard.KEY_Escape) {
       this.exit();

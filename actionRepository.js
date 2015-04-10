@@ -20,7 +20,17 @@ ActionRepository.define('offerRespect', {
   command: 'offerRespect',
   icon:    'Icon.7_06.png',
   desc:    'Offer respect to your target',
-  coolDownCost: 1,
+  coolDownCost: 0,
+  isSustained:  false,
+  isRandom:     false
+});
+
+ActionRepository.define('take', {
+  name:    'Take',
+  command: 'take',
+  icon:    'Icon.5_92.png',
+  desc:    'Take something to carry with you',
+  coolDownCost: 0,
   isSustained:  false,
   isRandom:     false
 });

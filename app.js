@@ -22,6 +22,7 @@ var App = {
 
     this.player.actions.push(ActionRepository.create('look'));
     this.player.actions.push(ActionRepository.create('offerRespect'));
+    this.player.actions.push(ActionRepository.create('take'));
   },
 
   initEvents: function() {
@@ -100,12 +101,6 @@ var App = {
 
   getAction: function(id) {
     return this.findEntity(id, this.player.actions);
-  },
-
-  wander: function() {
-    var exitName = Helpers.randElement(this.player.room.getExitNames());
-    Screens.sendMessage(this.player, 'you wandered towards the '+ exitName);
-    this.runCommand(exitName);
   },
 
   handleInput: function(code) {
