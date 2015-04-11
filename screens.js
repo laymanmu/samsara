@@ -47,28 +47,31 @@ Screens.Play = {
   childScreen:  null,
   cmdHistory:  {pos:0, partial:null, cmds:[]},
   ui:          {newLogMessageIDs:[]},
-  layout:     '\
-    <table id="app">\
-      <tr>\
-        <td><div id="output"><div id="roomDisplay"></div><div id="roomDetails"></div></div></td>\
-        <td><div id="context"></div></td>\
-      </tr>\
-      <tr><td colspan="2"><div id="log"></div></td></tr>\
-      <tr><td colspan="2" id="actions"></td></tr>\
-      <tr><td colspan="2"><input id="input" type="text" placeholder="input"/></td></tr>\
-    </table>\
-    <div id="popup"></div>',
+
+  layout: '<table id="app">\
+            <tr>\
+              <td width="800" height="525"><canvas id="canvas"></canvas><div id="details"></div></td>\
+              <td><div id="context"></div></td>\
+            </tr>\
+            <tr><td colspan="2"><div id="log"></div></td></tr>\
+            <tr><td colspan="2"><div id="actions"></div></td></tr>\
+            <tr><td colspan="2"><input id="input" type="text" placeholder="input"/></td></tr>\
+           </table>\
+           <div id="popup"></div>',
 
   enter: function(properties) {
     Screens.layoutContainer.innerHTML = this.layout;
-    this.ui.output  = document.getElementById('output');
-    this.ui.display = document.getElementById('roomDisplay');
-    this.ui.details = document.getElementById('roomDetails');
+    this.ui.canvas  = document.getElementById('canvas');
+    this.ui.details = document.getElementById('details');
     this.ui.context = document.getElementById('context');
-    this.ui.input   = document.getElementById('input');
     this.ui.log     = document.getElementById('log');
-    this.ui.popup   = document.getElementById('popup');
     this.ui.actions = document.getElementById('actions');
+    this.ui.input   = document.getElementById('input');
+    this.ui.popup   = document.getElementById('popup');
+
+    this.ui.canvas.width  = 800;
+    this.ui.canvas.height = 300;
+
     this.ui.actions.innerHTML = "";
     for (var i=0; i<App.player.actions.length; i++) {
       this.ui.actions.appendChild(App.player.actions[i].image);
@@ -95,7 +98,7 @@ Screens.Play = {
     var room = App.player.room;
     var html = '';
 
-    this.ui.display.innerHTML = room.display;
+    //this.ui.display.innerHTML = room.display;
 
     html += '<span class="roomName">'+room.name+'</span><br>';
     html += '<span class="roomDesc">'+room.desc+'</span><br>';
@@ -214,6 +217,25 @@ Screens.Play = {
         Helpers.hidePopup();
       });
     }
+
+    // apply image filters:
+    var image = new Image();
+    image.src = room.display;
+    image.onload = function() {
+      var filter = null;
+      var args   = null;
+      var roll   = Helpers.randInt(1,4);
+      if (roll == 1) {
+        filter = ImageFilters.grayscale;
+      } else if (roll == 2) {
+        filter = ImageFilters.brightness;
+        args   = [125];
+      } else if (roll == 3) {
+        filter = ImageFilters.threshold;
+        args   = [125];
+      }
+      ImageFilters.draw(image, filter, args);
+    };
   },
 
   setContextTab: function(tab, data) {
@@ -264,8 +286,6 @@ Screens.Play = {
     if (App.player.target && App.player.target.room.id != App.player.room.id) {
       App.player.target = null;
     }
-    // screen:
-    this.draw();
   },
 
   setChildScreen: function(screen, properties) {
