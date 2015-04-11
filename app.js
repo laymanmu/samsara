@@ -95,7 +95,7 @@ var App = {
   },
 
   initItems: function() {
-    var numItems = Helpers.randInt(30, 100);
+    var numItems = 6;
     for (var i=0; i<numItems; i++) {
       var item = ItemRepository.createRandom();
       var room = this.rooms[Helpers.randInt(0, this.rooms.length-1)];

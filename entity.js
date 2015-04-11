@@ -1,6 +1,6 @@
 
 var Entity = function(properties) {
-  this.id    = "entity" + Helpers.getUniqueID();
+  this.id    = Helpers.getUniqueID("entity");
   properties = properties      || {};
   this.name  = properties.name || "entity";
   this.desc  = properties.desc || "an entity";
