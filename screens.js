@@ -4,7 +4,7 @@ var Screens = {
   layoutContainer: null,
 
   init: function() {
-    this.layoutContainer = document.getElementById("screen");
+    this.layoutContainer = document.getElementById("details");
     this.switchScreen(Screens.Start);
   },
 
@@ -48,19 +48,7 @@ Screens.Play = {
   cmdHistory:  {pos:0, partial:null, cmds:[]},
   ui:          {newLogMessageIDs:[]},
 
-  layout: '<table id="app">\
-            <tr>\
-              <td width="800" height="525"><canvas id="canvas"></canvas><div id="details"></div></td>\
-              <td><div id="context"></div></td>\
-            </tr>\
-            <tr><td colspan="2"><div id="log"></div></td></tr>\
-            <tr><td colspan="2"><div id="actions"></div></td></tr>\
-            <tr><td colspan="2"><input id="input" type="text" placeholder="input"/></td></tr>\
-           </table>\
-           <div id="popup"></div>',
-
   enter: function(properties) {
-    Screens.layoutContainer.innerHTML = this.layout;
     this.ui.canvas  = document.getElementById('canvas');
     this.ui.details = document.getElementById('details');
     this.ui.context = document.getElementById('context');
@@ -148,15 +136,11 @@ Screens.Play = {
       html += '</div>';
     }
 
-    // set ui.output html:
+    // set ui.details html:
     this.ui.details.innerHTML = html;
 
     // set ui.context html:
-    if (!App.player.target) {
-      this.ui.context.innerHTML = "";
-    } else {
-      this.ui.context.innerHTML = App.player.target.getPopupHTML();
-    }
+    this.updateTargetContext();
 
     // setup exit events:
     for (var i=0; i<exitRooms.length; i++) {
@@ -199,10 +183,7 @@ Screens.Play = {
           App.player.target = App.player.room.getMob(e.target.id);
           document.getElementById(App.player.target.id).className = "roomMob targeted";
         }
-        if (Screens.currentScreen.ui.context) {
-          var html = App.player.target ? App.player.target.getPopupHTML() : "";
-          Screens.currentScreen.ui.context.innerHTML = html;
-        }
+        Screens.Play.updateTargetContext();
       });
     }
 
@@ -224,6 +205,7 @@ Screens.Play = {
     image.onload = function() {
       var filter = null;
       var args   = null;
+      /*
       var roll   = Helpers.randInt(1,4);
       if (roll == 1) {
         filter = ImageFilters.grayscale;
@@ -234,21 +216,10 @@ Screens.Play = {
         filter = ImageFilters.threshold;
         args   = [125];
       }
+      */
+      filter = ImageFilters.blur;
       ImageFilters.draw(image, filter, args);
     };
-  },
-
-  setContextTab: function(tab, data) {
-    var tabs = document.getElementsByTagName('tab');
-    for (var i=0; i<tabs.length; i++) {
-      tabs[i].className = "tab";
-    }
-    if (tab) {
-      tab.className = "selectedTab";
-    } else {
-
-    }
-
   },
 
   update: function() {
@@ -347,7 +318,18 @@ Screens.Play = {
         }
       }
     }
+  },
+
+  updateTargetContext: function() {
+    var html = "";
+    if (App.player.target) {
+      html += 'Target:<br><div class="contextPopup">';
+      html += App.player.target ? App.player.target.getPopupHTML() : "";
+      html += '</div>';
+    }
+    Screens.currentScreen.ui.context.innerHTML = html;
   }
+
 };
 
 //==================================================================
@@ -355,7 +337,7 @@ Screens.Play = {
 //==================================================================
 
 Screens.Start = {
-  layout: '<div id="app">press Enter to start</div>',
+  layout: '<div id="layout">press Enter to start</div>',
   enter: function(properties) {
     Screens.layoutContainer.innerHTML = this.layout;
   },
@@ -366,6 +348,7 @@ Screens.Start = {
   draw: function() {
   },
   print: function(msg) {
+    Screens.layoutContainer.innerHTML += '<p>'+msg+'</p>';
     document.body.innerHTML += msg;
   },
   handleInput: function(code) {

@@ -26,6 +26,18 @@
     <script src="imageFilters.js"></script>
   </head>
   <body onload="App.init();">
-    <div id="screen"></div>
+    <div id="screen">
+      <table id="layout">
+        <tr>
+          <td><canvas id="canvas" width="800" height="300"></canvas></td>
+          <td rowspan="2"><div id="context"></div>
+        </tr>
+        <tr><td width="800" height="150"><div id="details"></div></td></tr>
+        <tr><td colspan="2"><div id="actions"></div></td></tr>
+        <tr><td colspan="2"><div id="log"></div></td></tr>
+        <tr><td colspan="2"><input id="input" type="text" placeholder="input"/></td></tr>
+      </table>
+      <div id="popup"></div>',
+    </div><!-- screen -->
   </body>
 </html>

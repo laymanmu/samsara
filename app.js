@@ -13,6 +13,7 @@ var App = {
     this.initMobs();
     this.initItems();
     this.initPlayer();
+    ImageFilters.init();
     Screens.init();
   },
 

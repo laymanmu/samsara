@@ -16,49 +16,25 @@ td {
   padding: 0;
 }
 
-#app {
-  background-color: #111;
+#layout {
   color: #eee;
   margin: 5px;
 }
 
-#output {
-  width:  800px;
-  height: 525px;
-  background-color: #111;
-}
-
-#roomDisplay {
-  width:  100%;
-  height: 60%;
-  text-align: center;
-  background-color: #111;
-  overflow: auto;
-}
-
-#roomDetails {
-  width: 100%;
-  height: 40%;
-  text-align: left;
-  background-color: #111;
-}
-
 #context {
-  background-color: #222;
   color: #fff;
   width: 200px;
-  height: 525px;
+  height: 450px;
   text-align: left;
+  font-size: 13px;
 }
 
 #actions {
-  background-color: #222;
   width: 1000px;
   text-align: left;
 }
 
 #log {
-  background-color: #222;
   color: #aaa;
   width: 100%;
   height: 100px;
@@ -103,6 +79,14 @@ td {
   color: white;
   font-size: 12px;
   text-align: left;
+}
+
+.contextPopup {
+  border: 2px solid #987;
+  background-color: #123;
+  color: #fff;
+  padding: 5px;
+  font-size: 12px;
 }
 
 .actionIcon {
@@ -154,9 +138,9 @@ td {
 }
 
 .roomMob.targeted {
-  border: 1px solid red;
-  color: black;
-  background-color: white;
+  border: 1px solid #987;
+  background-color: #123;
+  color: #ff0;
 }
 
 .roomItem {
