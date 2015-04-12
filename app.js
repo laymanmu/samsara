@@ -14,6 +14,7 @@ var App = {
     this.initItems();
     this.initPlayer();
     ImageFilters.init();
+    Animations.init();
     Screens.init();
   },
 

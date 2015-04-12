@@ -56,9 +56,11 @@ Entity.prototype.capitalizeName = function() {
   return first + other;
 };
 
-Entity.prototype.getPopupHTML = function(charsWide) {
-  charsWide = charsWide || 50;
+Entity.prototype.getPopupHTML = function() {
   var html = '<table>';
+  if (this.image) {
+    html += '<img class="popupImage" src="'+ this.image.src +'"/>';
+  }
   html += '<tr><td class="popupName">'+ this.capitalizeName() + '</td></tr>';
   html += '<tr><td class="popupDesc">'+ this.desc +'</td></tr>';
   html += '</table>';

@@ -203,22 +203,7 @@ Screens.Play = {
     var image = new Image();
     image.src = room.display;
     image.onload = function() {
-      var filter = null;
-      var args   = null;
-      /*
-      var roll   = Helpers.randInt(1,4);
-      if (roll == 1) {
-        filter = ImageFilters.grayscale;
-      } else if (roll == 2) {
-        filter = ImageFilters.brightness;
-        args   = [125];
-      } else if (roll == 3) {
-        filter = ImageFilters.threshold;
-        args   = [125];
-      }
-      */
-      filter = ImageFilters.blur;
-      ImageFilters.draw(image, filter, args);
+      Animations.startAnimating(Animations.bounceZoom, image);
     };
   },
 

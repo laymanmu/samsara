@@ -20,6 +20,7 @@ var ImageFilters = {
       data = filter.apply(null, filterArgs);
     }
     this.context.putImageData(data,0,0);
+    return data;
   }
 };
 

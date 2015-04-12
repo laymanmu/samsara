@@ -3,15 +3,17 @@ var Crafting = {};
 
 /** Item:
 * parms.name        = string: name of item
+* parms.iamge       = string: html image
 * parms.isTool      = bool:   used up when recipe crafted?
 * parms.numPerStack = int:    number of items in single stack
 **/
 Crafting.Item = function(parms) {
+  Entity.call(this, parms);
   this.id          = Helpers.getUniqueID('item');
-  this.name        = parms.name;
-  this.desc        = parms.desc;
   this.isTool      = parms.isTool;
   this.numPerStack = parms.numPerStack;
+  this.image       = new Image();
+  this.image.src   = parms.image;
 };
 
 Crafting.Item.prototype = Object.create(Entity.prototype);
