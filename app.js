@@ -138,11 +138,6 @@ var App = {
     if (ActionCommands.hasOwnProperty(cmd)) {
       ActionCommands[cmd]();
       return null;
-    } else if (cmd == "dhamma") {
-      var talk  = DhammaTalks.random();
-      var props = {title:talk.title, subTitle:talk.subTitle, text:talk.text};
-      Screens.currentScreen.setChildScreen(Screens.DhammaTalk, props);
-      return null;
     }
 
     // exact spelling of exits:

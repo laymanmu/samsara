@@ -63,24 +63,6 @@ td {
   width: 200px;
 }
 
-#dhammaTitle {
-  color: yellow;
-  font-size: 18px;
-  text-align: center;
-}
-
-#dhammaSubTitle {
-  color: #88a;
-  font-size: 16px;
-  text-align: center;
-}
-
-#dhammaText {
-  color: white;
-  font-size: 12px;
-  text-align: left;
-}
-
 .contextPopup {
   border: 2px solid #987;
   background-color: #123;
